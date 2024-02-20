@@ -2,7 +2,16 @@ import 'package:squiba/barrel/barrel.dart';
 import 'package:squiba/screens/welcome.dart';
 
 void main() {
-  runApp(const Squiba());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
+        ),
+      ],
+      child: const Squiba(),
+    ),
+  );
 }
 
 class Squiba extends StatelessWidget {
@@ -14,10 +23,10 @@ class Squiba extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: MaterialTheme.lightScheme().toColorScheme(),
-        fontFamily: GoogleFonts.nunito().fontFamily,
+        fontFamily: GoogleFonts.merriweather().fontFamily,
       ),
       darkTheme: ThemeData(
-        fontFamily: GoogleFonts.nunito().fontFamily,
+        fontFamily: GoogleFonts.merriweather().fontFamily,
         useMaterial3: true,
         colorScheme: MaterialTheme.darkScheme().toColorScheme(),
       ),

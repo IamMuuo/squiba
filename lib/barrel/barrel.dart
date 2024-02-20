@@ -6,3 +6,5 @@ export 'package:ionicons/ionicons.dart';
 export 'package:squiba/screens/login_screen.dart';
 export 'package:lottie/lottie.dart';
 export 'package:squiba/screens/signup_screen.dart';
+export 'package:provider/provider.dart';
+export 'package:squiba/providers/user_provider.dart';
