@@ -5,6 +5,12 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController firstnameController = TextEditingController();
+    TextEditingController lastnameController = TextEditingController();
+    TextEditingController phoneController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
     return Consumer<UserProvider>(
       builder: (context, value, child) => Scaffold(
         appBar: AppBar(
@@ -132,13 +138,30 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                FilledButton.icon(
-                  onPressed: () {
-                    value.login();
-                  },
-                  icon: const Icon(Ionicons.person_add),
-                  label: const Text("Get started"),
-                ),
+                value.signUpLoading
+                    ? Lottie.asset(
+                        "assets/lottie/loading.json",
+                        height: 40,
+                      )
+                    : FilledButton.icon(
+                        onPressed: () async {
+                          value.signUpLoading = true;
+                          // await Future.delayed(Duration(seconds: 12));
+                          if (passwordController.text ==
+                              confirmPasswordController.text) {
+                            await value.signUp(
+                              firstnameController.text,
+                              lastnameController.text,
+                              phoneController.text,
+                              emailController.text,
+                              passwordController.text,
+                            );
+                          }
+                          value.signUpLoading = false;
+                        },
+                        icon: const Icon(Ionicons.person_add),
+                        label: const Text("Get started"),
+                      ),
                 const SizedBox(height: 20),
                 TextButton(
                   onPressed: () {

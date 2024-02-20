@@ -1,5 +1,3 @@
-import 'package:squiba/barrel/barrel.dart';
-
 class User {
   int? id;
   String? firstname;
@@ -8,7 +6,9 @@ class User {
   String? profile;
   bool? active;
   String? email;
+  String? password;
 
+  User();
   // Maps the user struct to json
   Map<String, dynamic> get toJson {
     return {

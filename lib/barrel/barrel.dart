@@ -8,3 +8,7 @@ export 'package:lottie/lottie.dart';
 export 'package:squiba/screens/signup_screen.dart';
 export 'package:provider/provider.dart';
 export 'package:squiba/providers/user_provider.dart';
+export 'package:squiba/models/glitch/glitch.dart';
+export 'package:squiba/models/glitch/no_internet_glitch.dart';
+export 'package:http/http.dart';
+export 'package:fluttertoast/fluttertoast.dart';
