@@ -1,19 +1,19 @@
 import 'package:squiba/barrel/barrel.dart';
-import 'package:squiba/screens/layout_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
-    TextEditingController firstnameController = TextEditingController();
-    TextEditingController lastnameController = TextEditingController();
-    TextEditingController phoneController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    TextEditingController confirmPasswordController = TextEditingController();
+    final TextEditingController firstnameController = TextEditingController();
+    final TextEditingController lastnameController = TextEditingController();
+    final TextEditingController phoneController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController confirmPasswordController =
+        TextEditingController();
+
     return Consumer<UserProvider>(
-      builder: (context, value, child) => Scaffold(
+      builder: (context, provider, child) => Scaffold(
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
@@ -105,15 +105,17 @@ class SignUpScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 12),
                   child: TextField(
                     controller: passwordController,
-                    obscureText: value.showPassword,
+                    obscureText: provider.showPassword,
                     decoration: InputDecoration(
                       label: const Text("Password"),
                       suffixIcon: IconButton(
                         onPressed: () {
-                          value.toggleShowPassword();
+                          provider.toggleShowPassword();
                         },
                         icon: Icon(
-                          value.showPassword ? Ionicons.eye_off : Ionicons.eye,
+                          provider.showPassword
+                              ? Ionicons.eye_off
+                              : Ionicons.eye,
                         ),
                       ),
                       border: OutlineInputBorder(
@@ -126,14 +128,14 @@ class SignUpScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 12, bottom: 24),
                   child: TextField(
                     controller: confirmPasswordController,
-                    obscureText: value.showConfirmPassword,
+                    obscureText: provider.showConfirmPassword,
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
                         onPressed: () {
-                          value.toggleShowConfirmPassword();
+                          provider.toggleShowConfirmPassword();
                         },
                         icon: Icon(
-                          value.showConfirmPassword
+                          provider.showConfirmPassword
                               ? Ionicons.eye_off
                               : Ionicons.eye,
                         ),
@@ -145,14 +147,14 @@ class SignUpScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                value.signUpLoading
+                provider.signUpLoading
                     ? Lottie.asset(
                         "assets/lottie/loading.json",
                         height: 40,
                       )
                     : FilledButton.icon(
                         onPressed: () async {
-                          debugPrint(firstnameController.text);
+                          provider.toggleSignUpLoading();
                           if (firstnameController.text.isEmpty ||
                               lastnameController.text.isEmpty ||
                               phoneController.text.isEmpty ||
@@ -165,12 +167,12 @@ class SignUpScreen extends StatelessWidget {
                               backgroundColor:
                                   MaterialTheme.lightScheme().error,
                             );
+                            provider.toggleSignUpLoading();
                             return;
                           }
-                          value.signUpLoading = true;
                           if (passwordController.text ==
                               confirmPasswordController.text) {
-                            var isOk = await value.signUp(
+                            var isOk = await provider.signUp(
                               firstnameController.text,
                               lastnameController.text,
                               phoneController.text,
@@ -178,17 +180,20 @@ class SignUpScreen extends StatelessWidget {
                               passwordController.text,
                             );
                             isOk
-                                ? Navigator.pushAndRemoveUntil(
+                                ? routeFromAllAndTo(
                                     context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LayoutScreen()),
-                                    (Route<dynamic> route) =>
-                                        false, // This predicate always returns false, so all routes are removed.
+                                    const LayoutScreen(),
                                   )
                                 : debugPrint("Wrong creds..");
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: "Passwords dont match!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              backgroundColor:
+                                  MaterialTheme.lightScheme().error,
+                            );
                           }
-                          value.signUpLoading = false;
+                          provider.toggleSignUpLoading();
                         },
                         icon: const Icon(Ionicons.person_add),
                         label: const Text("Get started"),

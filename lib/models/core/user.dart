@@ -1,5 +1,5 @@
 class User {
-  final int id;
+  final int? id;
   final String firstName;
   final String lastName;
   final String email;
@@ -9,6 +9,7 @@ class User {
   final bool isActive;
   String? dateJoined;
   String? lastLogin;
+  String? password;
 
   User({
     required this.id,
@@ -21,6 +22,7 @@ class User {
     this.isActive = true,
     this.dateJoined,
     this.lastLogin,
+    this.password,
   });
 
   // Factory constructor to create a User instance from a Map (used for JSON decoding)
@@ -36,6 +38,7 @@ class User {
       isActive: json['is_active'],
       dateJoined: json['date_joined'],
       lastLogin: json['last_login'],
+      password: json['password'],
     );
   }
 
@@ -50,8 +53,9 @@ class User {
       'profile_photo': profilePhoto,
       'is_staff': isStaff,
       'is_active': isActive,
-      'date_joined': dateJoined,
+      'date_joined': dateJoined ?? DateTime.now().toIso8601String(),
       'last_login': lastLogin,
+      'password': password,
     };
   }
 }

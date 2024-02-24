@@ -1,13 +1,14 @@
 import 'package:squiba/barrel/barrel.dart';
 
 class UserProvider extends ChangeNotifier {
-  late User currentUser;
+  final UserService _userService = UserService();
+  late User _currentUser;
   bool _showPassword = false;
   bool _showConfirmPassword = false;
   bool _signupIsLoading = false;
   bool _loginLoading = false;
 
-  User get user => currentUser;
+  User get user => _currentUser;
   bool get showPassword => _showPassword;
   bool get showConfirmPassword => _showConfirmPassword;
   bool get signUpLoading => _signupIsLoading;
@@ -19,14 +20,25 @@ class UserProvider extends ChangeNotifier {
 
   Future<bool> signUp(String firstname, String lastname, String phone,
       String email, String password) async {
-    _signupIsLoading = true;
-    User _ = User(
+    User u = User(
       id: 0,
       email: email,
       lastName: lastname,
       firstName: firstname,
+      password: password,
+      mobilePhoneNumber: phone,
     );
-    return false;
+
+    final result = await _userService.register(u.toJson());
+    return result.fold((l) {
+      Fluttertoast.showToast(
+        msg: l.toString(),
+      );
+      return false;
+    }, (r) {
+      _currentUser = r;
+      return true;
+    });
   }
 
   set signUpLoading(bool val) {
@@ -46,6 +58,16 @@ class UserProvider extends ChangeNotifier {
 
   void toggleShowConfirmPassword() {
     _showConfirmPassword = !_showConfirmPassword;
+    notifyListeners();
+  }
+
+  void toggleSignUpLoading() {
+    _signupIsLoading = !_signupIsLoading;
+    notifyListeners();
+  }
+
+  void toggleSignInLoading() {
+    _loginLoading = !_loginLoading;
     notifyListeners();
   }
 }

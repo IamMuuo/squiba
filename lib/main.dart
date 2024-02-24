@@ -1,5 +1,4 @@
 import 'package:squiba/barrel/barrel.dart';
-import 'package:squiba/screens/layout_screen.dart';
 
 void main() {
   runApp(
@@ -23,15 +22,15 @@ class Squiba extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: MaterialTheme.lightScheme().toColorScheme(),
-        fontFamily: GoogleFonts.merriweather().fontFamily,
+        fontFamily: GoogleFonts.workSans().fontFamily,
       ),
       darkTheme: ThemeData(
-        fontFamily: GoogleFonts.merriweather().fontFamily,
+        fontFamily: GoogleFonts.workSans().fontFamily,
         useMaterial3: true,
         colorScheme: MaterialTheme.darkScheme().toColorScheme(),
       ),
       home: const Material(
-        child: LayoutScreen(),
+        child: WelcomeScreen(),
       ),
     );
   }
