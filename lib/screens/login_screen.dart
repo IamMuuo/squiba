@@ -5,6 +5,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _emailController = TextEditingController();
+    TextEditingController _passwordController = TextEditingController();
     return Consumer<UserProvider>(
       builder: (context, value, child) => Scaffold(
         extendBodyBehindAppBar: true,
@@ -43,6 +45,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 // Textfields
                 TextField(
+                  controller: _emailController,
                   decoration: InputDecoration(
                     label: const Text("Email"),
                     suffixIcon: const Icon(Ionicons.mail),
@@ -54,6 +57,7 @@ class LoginScreen extends StatelessWidget {
                 // Textfields
                 const SizedBox(height: 12),
                 TextField(
+                  controller: _passwordController,
                   obscureText: value.showPassword,
                   decoration: InputDecoration(
                     label: const Text("Password"),
@@ -80,11 +84,26 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
 
-                FilledButton.icon(
-                  icon: const Icon(Ionicons.lock_open),
-                  onPressed: () {},
-                  label: const Text("Login"),
-                ),
+                value.loginLoading
+                    ? Lottie.asset("assets/lottie/loading.json", height: 40)
+                    : FilledButton.icon(
+                        icon: const Icon(Ionicons.lock_open),
+                        onPressed: () async {
+                          if (_emailController.text.isEmpty ||
+                              _passwordController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: "Please ensure you fill the form",
+                                backgroundColor:
+                                    Theme.of(context).primaryColor);
+                            return;
+                          }
+                          value.loginLoading = true;
+                          await value.login(
+                              _emailController.text, _passwordController.text);
+                          value.loginLoading = false;
+                        },
+                        label: const Text("Login"),
+                      ),
 
                 const SizedBox(height: 50),
                 IntrinsicWidth(

@@ -1,4 +1,5 @@
 import 'package:squiba/barrel/barrel.dart';
+import 'package:squiba/screens/layout_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -47,6 +48,7 @@ class SignUpScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: TextField(
+                        controller: firstnameController,
                         decoration: InputDecoration(
                           label: const Text("First Name"),
                           suffixIcon: const Icon(Ionicons.person_outline),
@@ -60,6 +62,7 @@ class SignUpScreen extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: TextField(
+                        controller: lastnameController,
                         decoration: InputDecoration(
                           label: const Text("Last Name"),
                           suffixIcon: const Icon(Ionicons.person_outline),
@@ -75,6 +78,7 @@ class SignUpScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 12),
                   child: TextField(
+                    controller: phoneController,
                     decoration: InputDecoration(
                       label: const Text("Phone"),
                       suffixIcon: const Icon(Ionicons.call),
@@ -87,6 +91,7 @@ class SignUpScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 12),
                   child: TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       label: const Text("Email"),
                       suffixIcon: const Icon(Ionicons.mail),
@@ -99,6 +104,7 @@ class SignUpScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 12),
                   child: TextField(
+                    controller: passwordController,
                     obscureText: value.showPassword,
                     decoration: InputDecoration(
                       label: const Text("Password"),
@@ -119,6 +125,7 @@ class SignUpScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 12, bottom: 24),
                   child: TextField(
+                    controller: confirmPasswordController,
                     obscureText: value.showConfirmPassword,
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
@@ -145,17 +152,41 @@ class SignUpScreen extends StatelessWidget {
                       )
                     : FilledButton.icon(
                         onPressed: () async {
+                          debugPrint(firstnameController.text);
+                          if (firstnameController.text.isEmpty ||
+                              lastnameController.text.isEmpty ||
+                              phoneController.text.isEmpty ||
+                              emailController.text.isEmpty ||
+                              passwordController.text.isEmpty ||
+                              confirmPasswordController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                              msg: "Please fill the form to continue",
+                              toastLength: Toast.LENGTH_SHORT,
+                              backgroundColor:
+                                  MaterialTheme.lightScheme().error,
+                            );
+                            return;
+                          }
                           value.signUpLoading = true;
-                          // await Future.delayed(Duration(seconds: 12));
                           if (passwordController.text ==
                               confirmPasswordController.text) {
-                            await value.signUp(
+                            var isOk = await value.signUp(
                               firstnameController.text,
                               lastnameController.text,
                               phoneController.text,
                               emailController.text,
                               passwordController.text,
                             );
+                            isOk
+                                ? Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LayoutScreen()),
+                                    (Route<dynamic> route) =>
+                                        false, // This predicate always returns false, so all routes are removed.
+                                  )
+                                : debugPrint("Wrong creds..");
                           }
                           value.signUpLoading = false;
                         },

@@ -1,5 +1,5 @@
 import 'package:squiba/barrel/barrel.dart';
-import 'package:squiba/screens/welcome.dart';
+import 'package:squiba/screens/layout_screen.dart';
 
 void main() {
   runApp(
@@ -31,7 +31,7 @@ class Squiba extends StatelessWidget {
         colorScheme: MaterialTheme.darkScheme().toColorScheme(),
       ),
       home: const Material(
-        child: WelcomeScreen(),
+        child: LayoutScreen(),
       ),
     );
   }
