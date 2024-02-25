@@ -89,18 +89,24 @@ class LoginScreen extends StatelessWidget {
                     : FilledButton.icon(
                         icon: const Icon(Ionicons.lock_open),
                         onPressed: () async {
+                          value.toggleSignInLoading();
                           if (_emailController.text.isEmpty ||
                               _passwordController.text.isEmpty) {
                             Fluttertoast.showToast(
                                 msg: "Please ensure you fill the form",
                                 backgroundColor:
                                     Theme.of(context).primaryColor);
+                            value.toggleSignInLoading();
                             return;
                           }
                           value.loginLoading = true;
-                          await value.login(
+                          final ok = await value.login(
                               _emailController.text, _passwordController.text);
-                          value.loginLoading = false;
+                          ok
+                              ? routeFromAllAndTo(context, const LayoutScreen())
+                              : debugPrint("Something went wrong");
+
+                          value.toggleSignInLoading();
                         },
                         label: const Text("Login"),
                       ),

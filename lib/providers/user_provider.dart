@@ -3,8 +3,8 @@ import 'package:squiba/barrel/barrel.dart';
 class UserProvider extends ChangeNotifier {
   final UserService _userService = UserService();
   late User _currentUser;
-  bool _showPassword = false;
-  bool _showConfirmPassword = false;
+  bool _showPassword = true;
+  bool _showConfirmPassword = true;
   bool _signupIsLoading = false;
   bool _loginLoading = false;
 
@@ -15,7 +15,15 @@ class UserProvider extends ChangeNotifier {
   bool get loginLoading => _loginLoading;
 
   Future<bool> login(String email, String password) async {
-    return false;
+    final result = await _userService.login(email, password);
+    return result.fold((l) {
+      Fluttertoast.showToast(msg: l.toString());
+      return false;
+    }, (r) {
+      _currentUser = r;
+      notifyListeners();
+      return true;
+    });
   }
 
   Future<bool> signUp(String firstname, String lastname, String phone,
