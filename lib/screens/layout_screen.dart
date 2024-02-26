@@ -11,9 +11,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
   int _currentIndex = 0;
 
   final List<Widget> pages = const [
-    Center(
-      child: Text("Home"),
-    ),
+    HomeScreen(),
     Center(
       child: Text("Favourites"),
     ),
@@ -30,6 +28,10 @@ class _LayoutScreenState extends State<LayoutScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          IndexedStack(
+            index: _currentIndex,
+            children: pages,
+          ),
           Align(
             alignment: const Alignment(0.0, 1.0),
             child: Padding(
@@ -73,10 +75,6 @@ class _LayoutScreenState extends State<LayoutScreen> {
                 ),
               ),
             ),
-          ),
-          IndexedStack(
-            index: _currentIndex,
-            children: pages,
           ),
         ],
       ),

@@ -19,3 +19,5 @@ export 'package:squiba/screens/welcome.dart';
 export 'package:squiba/utils/utility.dart';
 export 'package:squiba/models/persistence/user_persistence.dart';
 export 'package:shared_preferences/shared_preferences.dart';
+export 'package:squiba/screens/home_screen.dart';
+export 'package:cached_network_image/cached_network_image.dart';

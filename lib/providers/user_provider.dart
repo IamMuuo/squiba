@@ -19,7 +19,8 @@ class UserProvider extends ChangeNotifier {
     final user = await UserPersistence().getUser();
     if (user != null) {
       _currentUser = user;
-      notifyListeners();
+      debugPrint("loadUser done!");
+      // notifyListeners();
     }
   }
 

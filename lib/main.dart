@@ -7,7 +7,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => UserProvider()..loadUser(),
+          create: (context) => UserProvider(),
         ),
       ],
       child: Squiba(
@@ -26,6 +26,7 @@ class Squiba extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context);
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
@@ -38,7 +39,18 @@ class Squiba extends StatelessWidget {
         colorScheme: MaterialTheme.darkScheme().toColorScheme(),
       ),
       home: Material(
-        child: isLoggedIn ? const LayoutScreen() : const WelcomeScreen(),
+        child: isLoggedIn
+            ? FutureBuilder(
+                future: userProvider.loadUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return Center(
+                      child: Lottie.asset("assets/lottie/loading.json"),
+                    );
+                  }
+                  return const LayoutScreen();
+                })
+            : const WelcomeScreen(),
       ),
     );
   }
