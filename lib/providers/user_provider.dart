@@ -4,6 +4,7 @@ class UserProvider extends ChangeNotifier {
   final UserService _userService = UserService();
   late User _currentUser;
   bool _showPassword = true;
+  bool _isLoggedIn = false;
   bool _showConfirmPassword = true;
   bool _signupIsLoading = false;
   bool _loginLoading = false;
@@ -14,6 +15,14 @@ class UserProvider extends ChangeNotifier {
   bool get signUpLoading => _signupIsLoading;
   bool get loginLoading => _loginLoading;
 
+  Future<void> loadUser() async {
+    final user = await UserPersistence().getUser();
+    if (user != null) {
+      _currentUser = user;
+      notifyListeners();
+    }
+  }
+
   Future<bool> login(String email, String password) async {
     final result = await _userService.login(email, password);
     return result.fold((l) {
@@ -21,6 +30,8 @@ class UserProvider extends ChangeNotifier {
       return false;
     }, (r) {
       _currentUser = r;
+      UserPersistence().storeUser(r);
+      _isLoggedIn = true;
       notifyListeners();
       return true;
     });
@@ -45,6 +56,8 @@ class UserProvider extends ChangeNotifier {
       return false;
     }, (r) {
       _currentUser = r;
+      _isLoggedIn = true;
+      UserPersistence().storeUser(r);
       return true;
     });
   }
@@ -77,5 +90,9 @@ class UserProvider extends ChangeNotifier {
   void toggleSignInLoading() {
     _loginLoading = !_loginLoading;
     notifyListeners();
+  }
+
+  bool get isLoggedIn {
+    return _isLoggedIn;
   }
 }

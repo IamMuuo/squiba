@@ -8,3 +8,12 @@ void routeFromAllAndTo(BuildContext ctx, Widget page) {
         false, // This predicate always returns false, so all routes are removed.
   );
 }
+
+Future<bool> isLoggedIn() async {
+  final prefs = await SharedPreferences.getInstance();
+  final userString = prefs.getString('user');
+  if (userString != null) {
+    return true;
+  }
+  return false;
+}

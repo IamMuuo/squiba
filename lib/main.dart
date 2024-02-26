@@ -1,20 +1,28 @@
 import 'package:squiba/barrel/barrel.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final status = await isLoggedIn();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => UserProvider(),
+          create: (context) => UserProvider()..loadUser(),
         ),
       ],
-      child: const Squiba(),
+      child: Squiba(
+        isLoggedIn: status,
+      ),
     ),
   );
 }
 
 class Squiba extends StatelessWidget {
-  const Squiba({super.key});
+  const Squiba({
+    super.key,
+    required this.isLoggedIn,
+  });
+  final bool isLoggedIn;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +37,8 @@ class Squiba extends StatelessWidget {
         useMaterial3: true,
         colorScheme: MaterialTheme.darkScheme().toColorScheme(),
       ),
-      home: const Material(
-        child: WelcomeScreen(),
+      home: Material(
+        child: isLoggedIn ? const LayoutScreen() : const WelcomeScreen(),
       ),
     );
   }
