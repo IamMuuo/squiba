@@ -9,6 +9,7 @@ class PostWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 6),
       child: SizedBox(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               width: MediaQuery.of(context).size.width,
@@ -52,10 +53,18 @@ class PostWidget extends StatelessWidget {
             const SizedBox(height: 3),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              child: FittedBox(
-                fit: BoxFit.fill,
+              child: ClipRect(
                 child: CachedNetworkImage(
-                  height: 250,
+                  fit: BoxFit.fill,
+                  height: 350,
+                  placeholder: (context, url) => Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset("assets/lottie/dog_loading.json",
+                          height: 50),
+                      const Text("Fetching post")
+                    ],
+                  ),
                   imageUrl:
                       "https://i.pinimg.com/564x/be/1e/09/be1e09b31eef3bfb18fef17f25cab2d8.jpg",
                 ),
@@ -74,7 +83,14 @@ class PostWidget extends StatelessWidget {
                 ),
                 const Spacer()
               ],
-            )
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 2, left: 8),
+              child: Text(
+                "Hello there hi",
+                textAlign: TextAlign.start,
+              ),
+            ),
           ],
         ),
       ),

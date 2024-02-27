@@ -1,6 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:squiba/barrel/barrel.dart';
 import 'package:squiba/widgets/post_widget.dart';
+import 'package:squiba/widgets/story_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -43,28 +43,9 @@ class HomeScreen extends StatelessWidget {
                 child: ListView.builder(
                   itemCount: 10,
                   scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 1),
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          width: 2,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      child: CircleAvatar(
-                        radius: 30,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                "https://i.pinimg.com/564x/47/31/77/473177d48711cd0f8b1ff1c6d614b37a.jpg",
-                          ),
-                        ),
-                      ),
-                    ),
+                  itemBuilder: (context, index) => const StoryWidget(
+                    imageUrl:
+                        "https://i.pinimg.com/564x/a6/2b/73/a62b73acb6b9859e1d0d1245287b0f65.jpg",
                   ),
                 ),
               ),
@@ -73,7 +54,7 @@ class HomeScreen extends StatelessWidget {
             // Posts
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) => PostWidget(),
+                (context, index) => const PostWidget(),
                 childCount: 10,
               ),
             )

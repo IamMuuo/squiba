@@ -1,4 +1,5 @@
 import 'package:squiba/barrel/barrel.dart';
+import 'package:squiba/screens/reels_page.dart';
 
 class LayoutScreen extends StatefulWidget {
   const LayoutScreen({super.key});
@@ -13,11 +14,12 @@ class _LayoutScreenState extends State<LayoutScreen> {
   final List<Widget> pages = const [
     HomeScreen(),
     Center(
-      child: Text("Favourites"),
+      child: Text("Search"),
     ),
     Center(
-      child: Text("Text"),
+      child: Text("Create Post"),
     ),
+    ReelsPage(),
     Center(
       child: Text("Profile"),
     ),
@@ -59,16 +61,20 @@ class _LayoutScreenState extends State<LayoutScreen> {
                         label: "Home",
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Ionicons.heart_outline),
-                        label: "Favourites",
+                        icon: Icon(Ionicons.search_outline),
+                        label: "Search",
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Ionicons.chatbox_ellipses_outline),
-                        label: "Chat",
+                        icon: Icon(Ionicons.add_circle_outline),
+                        label: "Create",
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Ionicons.videocam),
+                        label: "Reels",
                       ),
                       BottomNavigationBarItem(
                         icon: Icon(Ionicons.person_circle_outline),
-                        label: "Favourites",
+                        label: "Profile",
                       ),
                     ],
                   ),
