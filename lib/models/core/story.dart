@@ -6,7 +6,7 @@ class Story {
   final String? content; // Nullable since content can be null
   final String dateUploaded;
   final String dateOfExpiry;
-  final String color; // Hex color code
+  final String? color; // Hex color code
 
   Story({
     required this.user,
@@ -43,7 +43,7 @@ class Story {
 
   // Method to convert the hex color code to a Color object
   Color get colorAsColor {
-    final hexCode = color.replaceFirst('#', '');
+    final hexCode = color?.replaceFirst('#', '');
     return Color(int.parse('FF$hexCode', radix: 16));
   }
 }
