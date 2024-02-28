@@ -52,11 +52,25 @@ class HomeScreen extends StatelessWidget {
                     return ListView.builder(
                       itemCount: storyProvider.stories.keys.length,
                       scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => StoryWidget(
-                        stories: storyProvider.stories[
-                            storyProvider.stories.keys.elementAt(index)]!,
-                        imageUrl:
-                            "https://i.pinimg.com/564x/a6/2b/73/a62b73acb6b9859e1d0d1245287b0f65.jpg",
+                      itemBuilder: (context, index) => FutureBuilder(
+                        future: userProvider.fetchUser(
+                          storyProvider.stories.keys.toList()[index],
+                        ),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState !=
+                              ConnectionState.done) {
+                            return Lottie.asset(
+                              "assets/lottie/loading.json",
+                              height: 25,
+                            );
+                          }
+                          return StoryWidget(
+                            stories: storyProvider.stories[
+                                storyProvider.stories.keys.elementAt(index)]!,
+                            imageUrl: snapshot.data?.profilePhoto ??
+                                "https://i.pinimg.com/564x/a6/2b/73/a62b73acb6b9859e1d0d1245287b0f65.jpg",
+                          );
+                        },
                       ),
                     );
                   },
@@ -67,7 +81,10 @@ class HomeScreen extends StatelessWidget {
             // Posts
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (context, index) => const PostWidget(),
+                (context, index) => const Padding(
+                  padding: EdgeInsets.only(top: 12),
+                  child: PostWidget(),
+                ),
                 childCount: 10,
               ),
             )

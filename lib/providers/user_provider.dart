@@ -38,6 +38,17 @@ class UserProvider extends ChangeNotifier {
     });
   }
 
+  Future<User?> fetchUser(int id) async {
+    final result = await _userService.find(id);
+
+    return result.fold((l) {
+      Fluttertoast.showToast(msg: l.toString());
+      return null;
+    }, (r) {
+      return r;
+    });
+  }
+
   Future<bool> signUp(String firstname, String lastname, String phone,
       String email, String password) async {
     User u = User(

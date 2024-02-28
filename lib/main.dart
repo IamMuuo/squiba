@@ -12,7 +12,6 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => StoryProvider(),
         ),
-
       ],
       child: Squiba(
         isLoggedIn: status,

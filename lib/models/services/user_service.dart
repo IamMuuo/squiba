@@ -52,4 +52,24 @@ class UserService with ApiService {
       );
     }
   }
+
+  Future<Either<Exception, User>> find(int id) async {
+    try {
+      final response = await get(
+        Uri.parse("${ApiService.urlPrefix}/users/info/$id"),
+        headers: headers,
+      );
+      if (response.statusCode != 200) {
+        return Left(Exception(jsonDecode(response.body)["error"]));
+      }
+
+      return Right(User.fromJson(json.decode(response.body)));
+    } catch (e) {
+      return Left(
+        Exception(
+          "Host resolution error please check your internet connection and try again",
+        ),
+      );
+    }
+  }
 }
