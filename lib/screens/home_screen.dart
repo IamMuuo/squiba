@@ -1,5 +1,4 @@
 import 'package:squiba/barrel/barrel.dart';
-import 'package:squiba/providers/story_provider.dart';
 import 'package:squiba/widgets/post_widget.dart';
 import 'package:squiba/widgets/story_widget.dart';
 
@@ -16,6 +15,9 @@ class HomeScreen extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
+              onStretchTrigger: () async {
+                await storyProvider.fetchStories();
+              },
               floating: true,
               pinned: true,
               snap: false,
@@ -39,42 +41,77 @@ class HomeScreen extends StatelessWidget {
 
             // Stories
             SliverToBoxAdapter(
-              child: SizedBox(
-                height: 100,
-                width: double.infinity,
-                child: FutureBuilder(
-                  future: storyProvider.fetchStories(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState != ConnectionState.done) {
-                      return Lottie.asset("assets/lottie/dog_loading.json",
-                          height: 50);
-                    }
-                    return ListView.builder(
-                      itemCount: storyProvider.stories.keys.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => FutureBuilder(
-                        future: userProvider.fetchUser(
-                          storyProvider.stories.keys.toList()[index],
+              child: Row(
+                children: [
+                  SizedBox(
+                    height: 100,
+                    width: 60,
+                    child: GestureDetector(
+                      child: CircleAvatar(
+                        radius: 60,
+                        child: ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(50)),
+                          child: Stack(
+                            children: [
+                              CachedNetworkImage(
+                                fit: BoxFit.fill,
+                                imageUrl: userProvider.user.profilePhoto ??
+                                    "https://i.pinimg.com/564x/a6/2b/73/a62b73acb6b9859e1d0d1245287b0f65.jpg",
+                              ),
+                              const Positioned(
+                                right: 4,
+                                bottom: 0,
+                                child: Icon(
+                                  Ionicons.add_circle,
+                                  color: Colors.teal,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState !=
-                              ConnectionState.done) {
-                            return Lottie.asset(
-                              "assets/lottie/loading.json",
-                              height: 25,
-                            );
-                          }
-                          return StoryWidget(
-                            stories: storyProvider.stories[
-                                storyProvider.stories.keys.elementAt(index)]!,
-                            imageUrl: snapshot.data?.profilePhoto ??
-                                "https://i.pinimg.com/564x/a6/2b/73/a62b73acb6b9859e1d0d1245287b0f65.jpg",
-                          );
-                        },
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100,
+                    width: MediaQuery.of(context).size.width - 60,
+                    child: FutureBuilder(
+                      future: storyProvider.fetchStories(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState != ConnectionState.done) {
+                          return Lottie.asset("assets/lottie/dog_loading.json",
+                              height: 50);
+                        }
+                        return ListView.builder(
+                          itemCount: storyProvider.stories.keys.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) => FutureBuilder(
+                            future: userProvider.fetchUser(
+                              storyProvider.stories.keys.toList()[index],
+                            ),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState !=
+                                  ConnectionState.done) {
+                                return Lottie.asset(
+                                  "assets/lottie/loading.json",
+                                  height: 16,
+                                );
+                              }
+                              return StoryWidget(
+                                stories: storyProvider.stories[storyProvider
+                                    .stories.keys
+                                    .elementAt(index)]!,
+                                imageUrl: snapshot.data?.profilePhoto ??
+                                    "https://i.pinimg.com/564x/a6/2b/73/a62b73acb6b9859e1d0d1245287b0f65.jpg",
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
 
