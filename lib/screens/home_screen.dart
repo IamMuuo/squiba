@@ -1,7 +1,7 @@
-import 'package:shimmer/shimmer.dart';
 import 'package:squiba/barrel/barrel.dart';
 import 'package:squiba/providers/posts_provider.dart';
 import 'package:squiba/widgets/post_widget.dart';
+import 'package:squiba/widgets/skeletons/story_widget_skeleton.dart';
 import 'package:squiba/widgets/story_widget.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -83,9 +83,11 @@ class HomeScreen extends StatelessWidget {
                       future: storyProvider.fetchStories(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState != ConnectionState.done) {
-                          return Lottie.asset(
-                            "assets/lottie/dog_loading.json",
-                            height: 25,
+                          return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) =>
+                                const StoryWidgetSkeleton(),
+                            itemCount: 5,
                           );
                         }
                         return ListView.builder(
