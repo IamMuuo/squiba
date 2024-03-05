@@ -1,4 +1,5 @@
 import 'package:squiba/barrel/barrel.dart';
+import 'package:squiba/providers/posts_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,6 +12,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => StoryProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PostProvider(),
         ),
       ],
       child: Squiba(

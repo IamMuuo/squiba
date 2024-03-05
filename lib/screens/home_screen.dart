@@ -1,4 +1,5 @@
 import 'package:squiba/barrel/barrel.dart';
+import 'package:squiba/providers/posts_provider.dart';
 import 'package:squiba/widgets/post_widget.dart';
 import 'package:squiba/widgets/story_widget.dart';
 
@@ -9,6 +10,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     final storyProvider = Provider.of<StoryProvider>(context);
+    final postsProvider = Provider.of<PostProvider>(context);
     return Scaffold(
       body: SafeArea(
         minimum: const EdgeInsets.only(bottom: 0, right: 0, left: 0, top: 12),
@@ -80,8 +82,10 @@ class HomeScreen extends StatelessWidget {
                       future: storyProvider.fetchStories(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState != ConnectionState.done) {
-                          return Lottie.asset("assets/lottie/dog_loading.json",
-                              height: 50);
+                          return Lottie.asset(
+                            "assets/lottie/dog_loading.json",
+                            height: 25,
+                          );
                         }
                         return ListView.builder(
                           itemCount: storyProvider.stories.keys.length,
@@ -115,16 +119,34 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            // Posts
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) => const Padding(
-                  padding: EdgeInsets.only(top: 12),
-                  child: PostWidget(),
-                ),
-                childCount: 10,
-              ),
-            )
+            FutureBuilder(
+              future: postsProvider.fetchPosts(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return SliverToBoxAdapter(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Lottie.asset(
+                          "assets/lottie/loading.json",
+                          height: 80,
+                        ),
+                        const Text("Refreshing your feed"),
+                      ],
+                    ),
+                  );
+                }
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: PostWidget(post: postsProvider.posts[index]),
+                    ),
+                    childCount: postsProvider.posts.length,
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
