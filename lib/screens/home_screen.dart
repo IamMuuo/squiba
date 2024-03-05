@@ -1,3 +1,4 @@
+import 'package:shimmer/shimmer.dart';
 import 'package:squiba/barrel/barrel.dart';
 import 'package:squiba/providers/posts_provider.dart';
 import 'package:squiba/widgets/post_widget.dart';
@@ -123,16 +124,10 @@ class HomeScreen extends StatelessWidget {
               future: postsProvider.fetchPosts(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState != ConnectionState.done) {
-                  return SliverToBoxAdapter(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Lottie.asset(
-                          "assets/lottie/loading.json",
-                          height: 80,
-                        ),
-                        const Text("Refreshing your feed"),
-                      ],
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      childCount: 10,
+                      (context, index) => const PostWidgetSkeleton(),
                     ),
                   );
                 }

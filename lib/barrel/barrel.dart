@@ -26,3 +26,4 @@ export 'package:squiba/models/services/story_service.dart';
 export 'package:squiba/providers/story_provider.dart';
 export 'package:squiba/screens/profile_page.dart';
 export 'package:squiba/widgets/profile_stat_widget.dart';
+export 'package:squiba/widgets/skeletons/post_widget_skeleton.dart';
