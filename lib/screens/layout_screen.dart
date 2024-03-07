@@ -20,9 +20,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
       child: Text("Create Post"),
     ),
     ReelsPage(),
-    Center(
-      child: Text("Profile"),
-    ),
+    ProfilePage(),
   ];
 
   @override
