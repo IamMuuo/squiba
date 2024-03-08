@@ -109,8 +109,8 @@ class HomeScreen extends StatelessWidget {
                                 stories: storyProvider.stories[storyProvider
                                     .stories.keys
                                     .elementAt(index)]!,
-                                imageUrl: snapshot.data?.profilePhoto ??
-                                    "https://i.pinimg.com/564x/a6/2b/73/a62b73acb6b9859e1d0d1245287b0f65.jpg",
+                                imageUrl: snapshot.data?.profilePhoto??"" 
+                                    
                               );
                             },
                           ),

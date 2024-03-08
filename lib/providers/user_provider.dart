@@ -24,6 +24,10 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> logout()async{
+     return await UserPersistence().logout();
+  }
+
   Future<bool> login(String email, String password) async {
     final result = await _userService.login(email, password);
     return result.fold((l) {

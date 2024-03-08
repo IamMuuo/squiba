@@ -31,4 +31,10 @@ class UserPersistence {
     }
     return null;
   }
+
+  // Clears everything from user persistence
+  Future<bool> logout() async{
+    final prefs = await SharedPreferences.getInstance();
+    return await prefs.clear();
+  }
 }

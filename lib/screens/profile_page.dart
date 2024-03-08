@@ -11,7 +11,14 @@ class ProfilePage extends StatelessWidget {
         title: Text("@${userProvider.user.firstName}"),
         centerTitle: true,
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Ionicons.share))
+          IconButton(
+              onPressed: () async {
+                final logout = await userProvider.logout();
+                if (logout) {
+                  routeFromAllAndTo(context, WelcomeScreen());
+                }
+              },
+              icon: const Icon(Ionicons.share))
         ],
       ),
       body: SafeArea(
@@ -29,7 +36,7 @@ class ProfilePage extends StatelessWidget {
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
                         imageUrl: userProvider.user.profilePhoto ??
-                            "https://i.pinimg.com/564x/21/e1/27/21e127d26c2dcb4e94607b1feb361bea.jpg",
+                            "https://i.pinimg.com/564x/20/05/e2/2005e27a39fa5f6d97b2e0a95233b2be.jpg",
                       ),
                     ),
                   ),
