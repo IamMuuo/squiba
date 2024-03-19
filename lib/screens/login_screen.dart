@@ -5,7 +5,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _emailController = TextEditingController();
+    TextEditingController _usernameController = TextEditingController();
     TextEditingController _passwordController = TextEditingController();
     return Consumer<UserProvider>(
       builder: (context, value, child) => Scaffold(
@@ -45,9 +45,9 @@ class LoginScreen extends StatelessWidget {
                 ),
                 // Textfields
                 TextField(
-                  controller: _emailController,
+                  controller: _usernameController,
                   decoration: InputDecoration(
-                    label: const Text("Email"),
+                    label: const Text("Username"),
                     suffixIcon: const Icon(Ionicons.mail),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(containerRadius),
@@ -90,7 +90,7 @@ class LoginScreen extends StatelessWidget {
                         icon: const Icon(Ionicons.lock_open),
                         onPressed: () async {
                           value.toggleSignInLoading();
-                          if (_emailController.text.isEmpty ||
+                          if (_usernameController.text.isEmpty ||
                               _passwordController.text.isEmpty) {
                             Fluttertoast.showToast(
                                 msg: "Please ensure you fill the form",
@@ -100,8 +100,8 @@ class LoginScreen extends StatelessWidget {
                             return;
                           }
                           value.loginLoading = true;
-                          final ok = await value.login(
-                              _emailController.text, _passwordController.text);
+                          final ok = await value.login(_usernameController.text,
+                              _passwordController.text);
                           ok
                               ? routeFromAllAndTo(context, const LayoutScreen())
                               : debugPrint("Something went wrong");

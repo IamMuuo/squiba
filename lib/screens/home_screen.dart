@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
 import 'package:squiba/barrel/barrel.dart';
 import 'package:squiba/providers/posts_provider.dart';
 import 'package:squiba/widgets/post_widget.dart';
@@ -50,6 +53,12 @@ class HomeScreen extends StatelessWidget {
                     height: 100,
                     width: 60,
                     child: GestureDetector(
+                      onTap: () async {
+                        if (Platform.isAndroid) {
+                          final image = await ImagePicker()
+                              .pickImage(source: ImageSource.gallery);
+                        }
+                      },
                       child: CircleAvatar(
                         radius: 60,
                         child: ClipRRect(
@@ -60,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                               CachedNetworkImage(
                                 fit: BoxFit.fill,
                                 imageUrl: userProvider.user.profilePhoto ??
-                                    "https://i.pinimg.com/564x/a6/2b/73/a62b73acb6b9859e1d0d1245287b0f65.jpg",
+                                    "https://i.pinimg.com/564x/20/05/e2/2005e27a39fa5f6d97b2e0a95233b2be.jpg",
                               ),
                               const Positioned(
                                 right: 4,
@@ -102,15 +111,15 @@ class HomeScreen extends StatelessWidget {
                                   ConnectionState.done) {
                                 return Lottie.asset(
                                   "assets/lottie/loading.json",
-                                  height: 16,
+                                  height: 10,
                                 );
                               }
                               return StoryWidget(
                                 stories: storyProvider.stories[storyProvider
                                     .stories.keys
                                     .elementAt(index)]!,
-                                imageUrl: snapshot.data?.profilePhoto??"" 
-                                    
+                                imageUrl: snapshot.data?.profilePhoto ??
+                                    "https://i.pinimg.com/564x/20/05/e2/2005e27a39fa5f6d97b2e0a95233b2be.jpg",
                               );
                             },
                           ),

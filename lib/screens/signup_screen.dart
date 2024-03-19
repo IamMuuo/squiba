@@ -8,6 +8,7 @@ class SignUpScreen extends StatelessWidget {
     final TextEditingController lastnameController = TextEditingController();
     final TextEditingController phoneController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
+    final TextEditingController usernameController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     final TextEditingController confirmPasswordController =
         TextEditingController();
@@ -40,6 +41,19 @@ class SignUpScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(50),
                     child: Lottie.asset("assets/lottie/cat_dance.json",
                         fit: BoxFit.cover),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: TextField(
+                    controller: usernameController,
+                    decoration: InputDecoration(
+                      label: const Text("Username"),
+                      suffixIcon: const Icon(Ionicons.at),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(containerRadius),
+                      ),
+                    ),
                   ),
                 ),
                 Row(
@@ -173,6 +187,7 @@ class SignUpScreen extends StatelessWidget {
                           if (passwordController.text ==
                               confirmPasswordController.text) {
                             var isOk = await provider.signUp(
+                              usernameController.text,
                               firstnameController.text,
                               lastnameController.text,
                               phoneController.text,

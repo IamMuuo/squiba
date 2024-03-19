@@ -24,8 +24,8 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> logout()async{
-     return await UserPersistence().logout();
+  Future<bool> logout() async {
+    return await UserPersistence().logout();
   }
 
   Future<bool> login(String email, String password) async {
@@ -53,11 +53,18 @@ class UserProvider extends ChangeNotifier {
     });
   }
 
-  Future<bool> signUp(String firstname, String lastname, String phone,
-      String email, String password) async {
+  Future<bool> signUp(
+    String username,
+    String firstname,
+    String lastname,
+    String phone,
+    String email,
+    String password,
+  ) async {
     User u = User(
       id: 0,
       email: email,
+      username: username,
       lastName: lastname,
       firstName: firstname,
       password: password,

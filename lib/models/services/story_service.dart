@@ -1,5 +1,6 @@
 import 'package:squiba/barrel/barrel.dart';
 import 'package:dartz/dartz.dart';
+// import 'package:http/http.dart' as http;
 
 class StoryService with ApiService {
   Future<Either<Exception, List<Story>>> fetchAllStories() async {
@@ -20,4 +21,16 @@ class StoryService with ApiService {
       return Left(Exception(e.toString()));
     }
   }
+
+  // Future<Either<Exception, bool>> postStory(
+  //   int userID,
+  //   File image, {
+  //   String? text,
+  // }) async {
+  //   var request = http.MultipartRequest(
+  //       "POST", Uri.parse("${ApiService.urlPrefix}/stories/create"));
+  //   request.fields["user"] = userID.toString();
+  //   request.fields["text"] = text ?? "";
+  //   request.files.add(http.MultipartFile.fromBytes("content", image.readAsBytes()))
+  // }
 }

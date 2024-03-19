@@ -26,12 +26,13 @@ class UserService with ApiService {
   }
 
   // login
-  Future<Either<Exception, User>> login(String email, String password) async {
+  Future<Either<Exception, User>> login(
+      String username, String password) async {
     try {
       final response = await post(
         Uri.parse("${ApiService.urlPrefix}/users/auth/"),
         body: json.encode({
-          "email": email,
+          "username": username,
           "password": password,
         }),
         headers: headers,
