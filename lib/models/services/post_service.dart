@@ -21,4 +21,22 @@ class PostServixe with ApiService {
       return Left(Exception(e.toString()));
     }
   }
+
+  Future<Either<Exception, List<Post>>> fetchCurrentUserPosts(int userID) async {
+    try {
+      final response =
+          await get(Uri.parse("${ApiService.urlPrefix}/posts/find/$userID"));
+      if (response.statusCode != 200) {
+        return left(Exception(response.body));
+      }
+      var posts = jsonDecode(response.body);
+      final pp = <Post>[];
+      for (var story in posts) {
+        pp.add(Post.fromJson(story));
+      }
+      return Right(pp);
+    } catch (e) {
+      return Left(Exception(e.toString()));
+    }
+  }
 }
