@@ -1,4 +1,5 @@
 import 'package:squiba/barrel/barrel.dart';
+import 'package:squiba/screens/gallery_page.dart';
 import 'package:squiba/screens/reels_page.dart';
 
 class LayoutScreen extends StatefulWidget {
@@ -16,9 +17,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
     Center(
       child: Text("Search"),
     ),
-    Center(
-      child: Text("Create Post"),
-    ),
+    GalleryScreen(),
     ReelsPage(),
     ProfilePage(),
   ];
