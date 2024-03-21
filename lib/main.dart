@@ -35,16 +35,17 @@ class Squiba extends StatelessWidget {
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
     return MaterialApp(
+      title: "Anigram",
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: MaterialTheme.lightScheme().toColorScheme(),
         fontFamily: GoogleFonts.workSans().fontFamily,
       ),
-      darkTheme: ThemeData(
-        fontFamily: GoogleFonts.workSans().fontFamily,
-        useMaterial3: true,
-        colorScheme: MaterialTheme.darkScheme().toColorScheme(),
-      ),
+      // darkTheme: ThemeData(
+      //   fontFamily: GoogleFonts.workSans().fontFamily,
+      //   useMaterial3: true,
+      //   colorScheme: MaterialTheme.darkScheme().toColorScheme(),
+      // ),
       home: Material(
         child: isLoggedIn
             ? FutureBuilder(

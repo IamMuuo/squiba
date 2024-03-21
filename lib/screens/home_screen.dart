@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
     final postsProvider = Provider.of<PostProvider>(context);
     return Scaffold(
       body: SafeArea(
-        minimum: const EdgeInsets.only(bottom: 0, right: 0, left: 0, top: 12),
+        // minimum: const EdgeInsets.only(bottom: 0, right: 0, left: 0, top: 12),
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
               pinned: true,
               snap: false,
               title: Text(
-                "Squiba",
+                "Anigram",
                 style: Theme.of(context).textTheme.displayMedium?.copyWith(
                     fontFamily: GoogleFonts.caveat().fontFamily,
                     fontWeight: FontWeight.bold),
@@ -40,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {},
-                  icon: const Icon(Ionicons.chatbubble_outline),
+                  icon: const Icon(Ionicons.chatbubbles_outline),
                 )
               ],
             ),
@@ -51,43 +51,51 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   SizedBox(
                     height: 100,
-                    width: 60,
-                    child: GestureDetector(
-                      onTap: () async {
-                        if (Platform.isAndroid) {
-                          final image = await ImagePicker()
-                              .pickImage(source: ImageSource.gallery);
-                        }
-                      },
-                      child: CircleAvatar(
-                        radius: 60,
-                        child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(50)),
-                          child: Stack(
-                            children: [
-                              CachedNetworkImage(
-                                fit: BoxFit.fill,
-                                imageUrl: userProvider.user.profilePhoto ??
-                                    "https://i.pinimg.com/564x/20/05/e2/2005e27a39fa5f6d97b2e0a95233b2be.jpg",
+                    width: 80,
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                            if (Platform.isAndroid) {
+                              final image = await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery);
+                            }
+                          },
+                          child: CircleAvatar(
+                            radius: 40,
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(50)),
+                              child: Stack(
+                                children: [
+                                  CachedNetworkImage(
+                                    fit: BoxFit.fill,
+                                    imageUrl: userProvider.user.profilePhoto ??
+                                        "https://i.pinimg.com/564x/20/05/e2/2005e27a39fa5f6d97b2e0a95233b2be.jpg",
+                                  ),
+                                  const Positioned(
+                                    right: 5,
+                                    bottom: 0,
+                                    child: Icon(
+                                      Ionicons.add_circle,
+                                      color: Colors.teal,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const Positioned(
-                                right: 4,
-                                bottom: 0,
-                                child: Icon(
-                                  Ionicons.add_circle,
-                                  color: Colors.teal,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
+                        Text(
+                          "Your story",
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
                     height: 100,
-                    width: MediaQuery.of(context).size.width - 60,
+                    width: MediaQuery.of(context).size.width - 80,
                     child: FutureBuilder(
                       future: storyProvider.fetchStories(),
                       builder: (context, snapshot) {

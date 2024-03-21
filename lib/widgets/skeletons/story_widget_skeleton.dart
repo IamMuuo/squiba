@@ -12,7 +12,7 @@ class StoryWidgetSkeleton extends StatelessWidget {
       child: const Padding(
         padding: EdgeInsets.symmetric(horizontal: 2),
         child: CircleAvatar(
-          radius: 30,
+          radius: 40,
         ),
       ),
     );
