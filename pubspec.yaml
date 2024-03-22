@@ -48,6 +48,7 @@ dependencies:
   shimmer: ^3.0.0
   image_picker: ^1.0.7
   crop_image: ^1.0.12
+  video_player: ^2.8.3
 
 dev_dependencies:
   flutter_test:

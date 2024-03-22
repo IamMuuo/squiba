@@ -67,15 +67,45 @@ class _GalleryScreenState extends State<GalleryScreen> {
               ],
       ),
       body: _postImage == null
-          ? const Center(
+          ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Ionicons.camera,
                     size: 120,
                   ),
-                  Text("Please take a photo or pick from gallery to continue")
+                  const Text(
+                      "Please take a photo or pick from gallery to continue"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        tooltip: "Take a photo",
+                        iconSize: 30,
+                        color: Theme.of(context).colorScheme.primary,
+                        onPressed: () async {
+                          setState(() {
+                            _currentScreen = _GalleryScreens.camera;
+                          });
+                          await _loadImage();
+                        },
+                        icon: const Icon(Ionicons.camera),
+                      ),
+                      IconButton(
+                        tooltip: "Pick image",
+                        // iconSize: 30,
+                        color: Theme.of(context).colorScheme.primary,
+                        onPressed: () async {
+                          setState(() {
+                            _currentScreen = _GalleryScreens.gallery;
+                          });
+                          await _loadImage();
+                        },
+                        icon: const Icon(Ionicons.images),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             )
@@ -123,34 +153,6 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 ),
               ),
             ),
-      floatingActionButton: _postImage == null
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FloatingActionButton(
-                  onPressed: () async {
-                    setState(() {
-                      _currentScreen = _GalleryScreens.camera;
-                    });
-                    await _loadImage();
-                  },
-                  child: const Icon(Ionicons.camera),
-                ),
-                const SizedBox(
-                  width: 2,
-                ),
-                FloatingActionButton(
-                  onPressed: () async {
-                    setState(() {
-                      _currentScreen = _GalleryScreens.gallery;
-                    });
-                    await _loadImage();
-                  },
-                  child: const Icon(Ionicons.images_outline),
-                )
-              ],
-            )
-          : null,
     );
   }
 }
