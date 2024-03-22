@@ -54,7 +54,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
             label: "Create",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Ionicons.videocam),
+            icon: Icon(Ionicons.videocam_outline),
             label: "Reels",
           ),
           BottomNavigationBarItem(
