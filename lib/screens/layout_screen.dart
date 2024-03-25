@@ -15,7 +15,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
   final List<Widget> pages = const [
     HomeScreen(),
     Center(
-      child: Text("Search"),
+      child: Text("Discover"),
     ),
     GalleryScreen(),
     ReelsPage(),

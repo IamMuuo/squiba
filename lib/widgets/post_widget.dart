@@ -63,7 +63,7 @@ class PostWidget extends StatelessWidget {
                     const Spacer(),
                     IconButton(
                       onPressed: () {},
-                      icon: const Icon(Ionicons.ellipsis_vertical_outline),
+                      icon: const Icon(Ionicons.share_social_outline),
                     ),
                   ],
                 ),
@@ -73,7 +73,7 @@ class PostWidget extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 child: ClipRect(
                   child: CachedNetworkImage(
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                     height: 350,
                     placeholder: (context, url) => Column(
                       mainAxisAlignment: MainAxisAlignment.center,
