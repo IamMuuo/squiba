@@ -22,7 +22,8 @@ class PostServixe with ApiService {
     }
   }
 
-  Future<Either<Exception, List<Post>>> fetchCurrentUserPosts(int userID) async {
+  Future<Either<Exception, List<Post>>> fetchCurrentUserPosts(
+      int userID) async {
     try {
       final response =
           await get(Uri.parse("${ApiService.urlPrefix}/posts/find/$userID"));
@@ -35,6 +36,24 @@ class PostServixe with ApiService {
         pp.add(Post.fromJson(story));
       }
       return Right(pp);
+    } catch (e) {
+      return Left(Exception(e.toString()));
+    }
+  }
+
+  Future<Either<Exception, List<Comment>>> fetchPostComments(int postID) async {
+    try {
+      final response =
+          await get(Uri.parse("${ApiService.urlPrefix}/comments/find/$postID"));
+      if (response.statusCode != 200) {
+        return left(Exception(response.body));
+      }
+
+      final rawComments =
+          jsonDecode(response.body).cast<Map<String, dynamic>>();
+
+      return right(
+          rawComments.map<Comment>((json) => Comment.fromJson(json)).toList());
     } catch (e) {
       return Left(Exception(e.toString()));
     }

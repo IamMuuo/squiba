@@ -25,4 +25,15 @@ class PostProvider extends ChangeNotifier {
       },
     );
   }
+
+  Future<List<Comment>> fetchPostComments(int postID) async {
+    final response = await _postService.fetchPostComments(postID);
+
+    return response.fold((l) {
+      Fluttertoast.showToast(msg: l.toString());
+      return [];
+    }, (r) {
+      return r;
+    });
+  }
 }

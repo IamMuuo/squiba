@@ -13,6 +13,7 @@ export 'package:fluttertoast/fluttertoast.dart';
 export 'package:squiba/models/core/user.dart';
 export 'package:squiba/models/services/service.dart';
 export 'package:squiba/models/services/user_service.dart';
+export 'package:squiba/models/core/comment.dart';
 export 'package:squiba/screens/layout_screen.dart';
 export 'dart:convert';
 export 'package:squiba/screens/welcome.dart';
