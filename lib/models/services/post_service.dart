@@ -58,4 +58,22 @@ class PostServixe with ApiService {
       return Left(Exception(e.toString()));
     }
   }
+
+  Future<Either<Exception, bool>> addComment(Comment comment) async {
+    try {
+      final response = await post(
+        Uri.parse(
+          "${ApiService.urlPrefix}/comments/create/",
+        ),
+        headers: headers,
+        body: json.encode(comment.toJson()),
+      );
+      if (response.statusCode != 201) {
+        return left(Exception(response.body));
+      }
+      return right(true);
+    } catch (e) {
+      return left(Exception(e));
+    }
+  }
 }

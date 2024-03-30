@@ -14,11 +14,11 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
-  final TextEditingController _captionsController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final _postsProvider = Provider.of<PostProvider>(context);
     final _userProvider = Provider.of<UserProvider>(context);
+    final _commentController = TextEditingController();
     return Scaffold(
       body: DefaultTabController(
         length: 2,
@@ -45,11 +45,20 @@ class _PostPageState extends State<PostPage> {
                 bottomOpacity: 1,
                 automaticallyImplyLeading: false,
                 title: TextField(
-                  controller: _captionsController,
+                  controller: _commentController,
                   decoration: InputDecoration(
                     hintText: "Whats on your mind",
                     suffixIcon: IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (_commentController.text.length < 3) {
+                          Fluttertoast.showToast(
+                            msg: "Comment cannot be empty",
+                          );
+                          return;
+                        }
+                        _postsProvider.postComment(_commentController.text,
+                            widget.post.id!, _userProvider.user.id!);
+                      },
                       icon: const Icon(Ionicons.send),
                     ),
                   ),
@@ -76,19 +85,26 @@ class _PostPageState extends State<PostPage> {
                 ),
               ),
             ),
-            // SliverList.builder(
-            //   itemCount: 2,
-            //   itemBuilder: (context, index) {
-            //     return Padding(
-            //       padding: const EdgeInsets.symmetric(vertical: 12),
-            //       child: Container(
-            //         color: Colors.white,
-            //         height: 100,
-            //         width: MediaQuery.of(context).size.width,
-            //       ),
-            //     );
-            //   },
-            // )
+            SliverToBoxAdapter(
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      Ionicons.heart_outline,
+                      size: 30,
+                    ),
+                    const SizedBox(width: 3),
+                    Text(
+                      "${widget.post.likes} likes",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+              ),
+            ),
             SliverFillRemaining(
               hasScrollBody: true,
               child: FutureBuilder(

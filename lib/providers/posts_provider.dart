@@ -36,4 +36,26 @@ class PostProvider extends ChangeNotifier {
       return r;
     });
   }
+
+  Future<bool> postComment(String comment, int post, int user) async {
+    Comment c = Comment(
+      id: null,
+      user: user,
+      post: post,
+      content: comment,
+      updatedAt: DateTime.now(),
+      createdAt: DateTime.now(),
+    );
+    final res = await _postService.addComment(c);
+
+    return res.fold((l) {
+      debugPrint(l.toString());
+      Fluttertoast.showToast(msg: l.toString());
+      return false;
+    }, (r) {
+      Fluttertoast.showToast(msg: "Comment succeffully posted");
+      notifyListeners();
+      return r;
+    });
+  }
 }
