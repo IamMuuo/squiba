@@ -58,4 +58,16 @@ class PostProvider extends ChangeNotifier {
       return r;
     });
   }
+
+  Future<void> likePost(int postID, int userID) async {
+    final res = await _postService.likePost(postID, userID);
+    res.fold((l) {
+      debugPrint(l.toString());
+      Fluttertoast.showToast(msg: l.toString());
+      return false;
+    }, (r) {
+      Fluttertoast.showToast(msg: "Post liked!");
+      notifyListeners();
+    });
+  }
 }

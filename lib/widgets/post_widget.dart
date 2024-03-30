@@ -1,5 +1,6 @@
 import 'package:squiba/barrel/barrel.dart';
 import 'package:squiba/models/core/posts.dart';
+import 'package:squiba/providers/posts_provider.dart';
 import 'package:squiba/screens/post_screen.dart';
 
 class PostWidget extends StatelessWidget {
@@ -9,6 +10,7 @@ class PostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userProvider = Provider.of<UserProvider>(context);
+    final _postProvider = Provider.of<PostProvider>(context);
 
     // userProvider.fetchUser(post.user).then((u) {
     //   user = u!;
@@ -16,6 +18,12 @@ class PostWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: GestureDetector(
+        onDoubleTap: () async {
+          await _postProvider.likePost(
+            post.id!,
+            userProvider.user.id!,
+          );
+        },
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -92,7 +100,12 @@ class PostWidget extends StatelessWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await _postProvider.likePost(
+                        post.id!,
+                        userProvider.user.id!,
+                      );
+                    },
                     icon: const Icon(Ionicons.heart_outline),
                   ),
                   Text(
@@ -103,7 +116,15 @@ class PostWidget extends StatelessWidget {
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return PostPage(post: post);
+                          },
+                        ),
+                      );
+                    },
                     icon: const Icon(Ionicons.paper_plane_outline),
                   ),
                   const Spacer()

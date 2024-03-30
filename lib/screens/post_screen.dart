@@ -29,7 +29,12 @@ class _PostPageState extends State<PostPage> {
               floating: true,
               actions: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await _postsProvider.likePost(
+                      widget.post.id!,
+                      _userProvider.user.id!,
+                    );
+                  },
                   icon: const Icon(
                     Ionicons.heart,
                   ),
@@ -85,26 +90,26 @@ class _PostPageState extends State<PostPage> {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Ionicons.heart_outline,
-                      size: 30,
-                    ),
-                    const SizedBox(width: 3),
-                    Text(
-                      "${widget.post.likes} likes",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // SliverToBoxAdapter(
+            //   child: Container(
+            //     padding:
+            //         const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       children: [
+            //         const Icon(
+            //           Ionicons.heart_outline,
+            //           size: 30,
+            //         ),
+            //         const SizedBox(width: 3),
+            //         Text(
+            //           "${widget.post.likes} likes",
+            //           style: Theme.of(context).textTheme.titleMedium,
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             SliverFillRemaining(
               hasScrollBody: true,
               child: FutureBuilder(

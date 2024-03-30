@@ -76,4 +76,23 @@ class PostServixe with ApiService {
       return left(Exception(e));
     }
   }
+
+  Future<Either<Exception, bool>> likePost(int postID, int userID) async {
+    try {
+      final response = await patch(
+        Uri.parse("${ApiService.urlPrefix}/posts/like/$postID"),
+        headers: headers,
+        body: json.encode({
+          "user_id": userID,
+        }),
+      );
+
+      if (response.statusCode != 200) {
+        return left(Exception("Failed to like post"));
+      }
+      return right(true);
+    } catch (e) {
+      return left(Exception(e));
+    }
+  }
 }
