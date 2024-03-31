@@ -1,45 +1,48 @@
 import 'package:squiba/barrel/barrel.dart';
+import 'package:video_player/video_player.dart';
+import 'dart:io';
 
-class ReelsPage extends StatelessWidget {
+final x = [
+  "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+  "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+];
+
+class ReelsPage extends StatefulWidget {
   const ReelsPage({super.key});
 
   @override
+  State<ReelsPage> createState() => _ReelsPageState();
+}
+
+class _ReelsPageState extends State<ReelsPage> {
+  @override
   Widget build(BuildContext context) {
-    final _pageViewController = PageController(initialPage: 0);
     return Scaffold(
-      body: PageView(
-        scrollDirection: Axis.vertical,
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.width,
-            color: Colors.red,
-          ),
-          Container(
-            height: MediaQuery.of(context).size.width,
-            color: Colors.orange,
-          ),
-          Container(
-            height: MediaQuery.of(context).size.width,
-            color: Colors.yellow,
-          ),
-          Container(
-            height: MediaQuery.of(context).size.width,
-            color: Colors.green,
-          ),
-          Container(
-            height: MediaQuery.of(context).size.width,
-            color: Colors.blue,
-          ),
-          Container(
-            height: MediaQuery.of(context).size.width,
-            color: Colors.indigo,
-          ),
-          Container(
-            height: MediaQuery.of(context).size.width,
-            color: Colors.purple,
-          ),
-        ],
-      ),
+      body: Platform.isAndroid
+          ? PageView.builder(
+              itemBuilder: (context, index) => Container(
+                child: _buildVideoPlayer(
+                  x[index],
+                ),
+              ),
+            )
+          : const Center(
+              child: Text("Not Supported on desktop"),
+            ),
+    );
+  }
+
+  Widget _buildVideoPlayer(String url) {
+    final VideoPlayerController controller =
+        VideoPlayerController.networkUrl(Uri.parse(url))
+          ..initialize().then((_) {
+            // Ensure the first frame is shown after the video is initialized.
+            setState(() {});
+          });
+
+    return SizedBox(
+      height: MediaQuery.of(context).size.width,
+      child: VideoPlayer(controller),
     );
   }
 }
