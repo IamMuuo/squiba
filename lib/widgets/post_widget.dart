@@ -106,7 +106,9 @@ class PostWidget extends StatelessWidget {
                         userProvider.user.id!,
                       );
                     },
-                    icon: const Icon(Ionicons.heart_outline),
+                    icon: userProvider.user.id! == post.id!
+                        ? const Icon(Ionicons.heart, color: Colors.red)
+                        : const Icon(Ionicons.heart_outline),
                   ),
                   Text(
                     post.likes.toString(),
