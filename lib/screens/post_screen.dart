@@ -26,6 +26,8 @@ class _PostPageState extends State<PostPage> {
           slivers: [
             SliverAppBar(
               expandedHeight: 300,
+              backgroundColor:
+                  Theme.of(context).colorScheme.primary.withOpacity(0),
               floating: true,
               actions: [
                 IconButton(
@@ -61,7 +63,7 @@ class _PostPageState extends State<PostPage> {
                           );
                           return;
                         }
-                        _postsProvider.postComment(_commentController.text,
+                        await _postsProvider.postComment(_commentController.text,
                             widget.post.id!, _userProvider.user.id!);
                       },
                       icon: const Icon(Ionicons.send),
@@ -129,42 +131,107 @@ class _PostPageState extends State<PostPage> {
                     );
                   }
                   return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) => Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Row(
-                        children: [
-                          FutureBuilder(
-                            future: _userProvider.fetchUser(widget.post.user),
-                            builder: (context, snapshot) {
-                              return CircleAvatar(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: CachedNetworkImage(
-                                    imageUrl: snapshot.data?.profilePhoto ??
-                                        "https://i.pinimg.com/564x/20/05/e2/2005e27a39fa5f6d97b2e0a95233b2be.jpg",
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) => snapshot
+                                  .data![index].user ==
+                              _userProvider.user.id
+                          ? Padding(
+                              padding: const EdgeInsets.all(12),
+                              child: Row(
+                                children: [
+                                  FutureBuilder(
+                                    future: _userProvider
+                                        .fetchUser(widget.post.user),
+                                    builder: (context, snapshot) {
+                                      return Column(
+                                        children: [
+                                          CircleAvatar(
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: CachedNetworkImage(
+                                                imageUrl: snapshot
+                                                        .data?.profilePhoto ??
+                                                    "https://i.pinimg.com/564x/20/05/e2/2005e27a39fa5f6d97b2e0a95233b2be.jpg",
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            '@${snapshot.data?.username ?? "Anon"}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall,
+                                          )
+                                        ],
+                                      );
+                                    },
                                   ),
+                                  const SizedBox(width: 3),
+                                  Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(4)),
+                                        border: Border.all(
+                                          width: 1,
+                                        )),
+                                    child: Text(
+                                      snapshot.data![index].content,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Row(
+                                  children: [
+                                    FutureBuilder(
+                                      future: _userProvider
+                                          .fetchUser(widget.post.user),
+                                      builder: (context, snapshot) {
+                                        return Column(
+                                          children: [
+                                            CircleAvatar(
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                child: CachedNetworkImage(
+                                                  imageUrl: snapshot
+                                                          .data?.profilePhoto ??
+                                                      "https://i.pinimg.com/564x/20/05/e2/2005e27a39fa5f6d97b2e0a95233b2be.jpg",
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              '@${snapshot.data?.username ?? "Anon"}',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall,
+                                            )
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                    const SizedBox(width: 3),
+                                    Container(
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(4)),
+                                          border: Border.all(
+                                            width: 1,
+                                          )),
+                                      child: Text(
+                                        snapshot.data![index].content,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              );
-                            },
-                          ),
-                          const SizedBox(width: 3),
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(4)),
-                                border: Border.all(
-                                  width: 1,
-                                )),
-                            child: Text(
-                              snapshot.data![index].content,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                              ),
+                            ));
                 },
               ),
             ),

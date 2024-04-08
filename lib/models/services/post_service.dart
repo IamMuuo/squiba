@@ -59,6 +59,7 @@ class PostServixe with ApiService {
   }
 
   Future<Either<Exception, bool>> addComment(Comment comment) async {
+    print(json.encode(comment));
     try {
       final response = await post(
         Uri.parse(

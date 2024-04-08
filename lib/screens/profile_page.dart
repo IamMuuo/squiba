@@ -51,8 +51,8 @@ class ProfilePage extends StatelessWidget {
                     stat: "0",
                     label: "following",
                   ),
-                  const ProfileStat(
-                    stat: "1",
+                  ProfileStat(
+                    stat: postsProvider.currentUserPostCount.toString(),
                     label: "Posts",
                   ),
                 ],

@@ -7,6 +7,7 @@ import 'package:squiba/models/services/post_service.dart';
 class PostProvider extends ChangeNotifier {
   final PostServixe _postService = PostServixe();
   List<Post> posts = <Post>[];
+  int currentUserPostCount = 0;
 
   Future<void> fetchPosts() async {
     final response = await _postService.fetchPosts();
@@ -25,6 +26,7 @@ class PostProvider extends ChangeNotifier {
         return List.empty();
       },
       (r) {
+        currentUserPostCount = r.length;
         return r;
       },
     );
