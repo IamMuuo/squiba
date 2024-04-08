@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:squiba/barrel/barrel.dart';
 import 'package:squiba/models/core/posts.dart';
 import 'package:dartz/dartz.dart';
@@ -93,6 +95,36 @@ class PostServixe with ApiService {
       return right(true);
     } catch (e) {
       return left(Exception(e));
+    }
+  }
+
+  Future<Either<Exception, bool>> addPost(
+      Uint8List image, String description, int userID) async {
+    try {
+      var request = MultipartRequest(
+          'POST', Uri.parse('${ApiService.urlPrefix}/posts/create/'));
+
+      request.files.add(await MultipartFile.fromBytes(
+        "content",
+        image,
+        filename: "image.jpg",
+      ));
+      request.fields["description"] = description;
+      request.fields["likes"] = 0.toString();
+      request.fields["user"] = userID.toString();
+
+      final response = await request.send();
+
+      if (response.statusCode == 201) {
+        return right(true);
+      } else {
+        // debugPrint(response.statusCode.toString());
+        // debugPrint(await response.stream.bytesToString());
+        return left(Exception("Failed to upload post"));
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return left(Exception(e.toString()));
     }
   }
 }

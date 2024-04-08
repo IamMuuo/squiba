@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:squiba/barrel/barrel.dart';
 import 'package:crop_image/crop_image.dart';
+import 'package:squiba/providers/posts_provider.dart';
 
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({super.key});
@@ -22,7 +23,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
   bool _done = false;
 
   final controller = CropController(
-    aspectRatio: 1,
+    aspectRatio: 4.0 / 3.0,
     defaultCrop: const Rect.fromLTRB(0.1, 0.1, 0.9, 0.9),
   );
 
@@ -42,6 +43,8 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _postProvider = Provider.of<PostProvider>(context);
+    final _userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -58,10 +61,17 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     },
                     icon: const Icon(Ionicons.trash)),
                 IconButton(
-                    onPressed: () {
+                    onPressed: () async {
                       setState(() {
                         _done = true;
                       });
+
+                      if (_done) {
+                        await _postProvider.addPost(_imageBytes!,
+                            _postTextController.text, _userProvider.user.id!);
+                        _imageBytes = null;
+                        _postImage = null;
+                      }
                     },
                     icon: const Icon(Ionicons.checkmark_outline)),
               ],
