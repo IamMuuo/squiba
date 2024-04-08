@@ -1,5 +1,6 @@
 import 'package:squiba/barrel/barrel.dart';
 import 'package:squiba/providers/posts_provider.dart';
+import 'package:squiba/widgets/profile_post_widget.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -66,8 +67,8 @@ class ProfilePage extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               FutureBuilder(
-                future: postsProvider
-                    .fetchCurrentUserPosts(userProvider.user.id ?? 0),
+                future:
+                    postsProvider.fetchCurrentUserPosts(userProvider.user.id!),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState != ConnectionState.done) {
                     return Column(
@@ -82,12 +83,10 @@ class ProfilePage extends StatelessWidget {
                   }
                   if (snapshot.hasData) {
                     return GridView.builder(
-                      itemCount: postsProvider.currentUserPosts.length,
+                      itemCount: snapshot.data?.length,
                       shrinkWrap: true,
-                      itemBuilder: (context, index) => Container(
-                        child: CachedNetworkImage(
-                            imageUrl:
-                                "https://i.pinimg.com/736x/f8/7c/06/f87c0685cbc71885be6bdb18d8248510.jpg"),
+                      itemBuilder: (context, index) => ProfilePostCard(
+                        post: snapshot.data![index],
                       ),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -105,7 +104,8 @@ class ProfilePage extends StatelessWidget {
                           height: 120,
                         ),
                         const Text(
-                            "Your posts will be listed here once uploaded")
+                          "Your posts will be listed here once uploaded",
+                        )
                       ],
                     );
                   }

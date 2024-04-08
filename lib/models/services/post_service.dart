@@ -32,12 +32,9 @@ class PostServixe with ApiService {
       if (response.statusCode != 200) {
         return left(Exception(response.body));
       }
-      var posts = jsonDecode(response.body);
-      final pp = <Post>[];
-      for (var story in posts) {
-        pp.add(Post.fromJson(story));
-      }
-      return Right(pp);
+      List<Map<String, dynamic>> posts =
+          jsonDecode(response.body).cast<Map<String, dynamic>>();
+      return right(posts.map((e) => Post.fromJson(e)).toList());
     } catch (e) {
       return Left(Exception(e.toString()));
     }
