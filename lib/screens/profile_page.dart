@@ -16,10 +16,33 @@ class ProfilePage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () async {
-                final logout = await userProvider.logout();
-                if (logout) {
-                  routeFromAllAndTo(context, WelcomeScreen());
-                }
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text(
+                          "Confirmation",
+                        ),
+                        content: const Text("Are you sure you want to leave? "),
+                        actions: [
+                          FilledButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("No"),
+                          ),
+                          FilledButton.tonal(
+                            onPressed: () async {
+                              final logout = await userProvider.logout();
+                              if (logout) {
+                                routeFromAllAndTo(context, WelcomeScreen());
+                              }
+                            },
+                            child: const Text("Leave"),
+                          ),
+                        ],
+                      );
+                    });
               },
               icon: const Icon(Ionicons.share))
         ],

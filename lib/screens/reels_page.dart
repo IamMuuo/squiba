@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:squiba/barrel/barrel.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:io';
@@ -24,15 +23,17 @@ class _ReelsPageState extends State<ReelsPage> {
   @override
   void initState() {
     super.initState();
-    _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(x[0]))
-      ..initialize().then(
-        (value) => setState(
-          () {
-            _isPlaying = false;
-            _videoPlayerController.pause();
-          },
-        ),
-      );
+    if (Platform.isIOS || Platform.isAndroid) {
+      _videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(x[0]))
+        ..initialize().then(
+          (value) => setState(
+            () {
+              _isPlaying = false;
+              _videoPlayerController.pause();
+            },
+          ),
+        );
+    }
   }
 
   @override
@@ -45,13 +46,13 @@ class _ReelsPageState extends State<ReelsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Platform.isAndroid
+      body: Platform.isAndroid || Platform.isIOS
           ? Focus(
-            onFocusChange: (value){
-              if(!value){
-                _videoPlayerController.pause();
-              }
-            },
+              onFocusChange: (value) {
+                if (!value) {
+                  _videoPlayerController.pause();
+                }
+              },
               child: PageView.builder(
                 scrollDirection: Axis.vertical,
                 itemCount: x.length,
@@ -115,7 +116,9 @@ class _ReelsPageState extends State<ReelsPage> {
                                 color: Colors.white,
                               ),
                               onPressed: () {
-                                setState(() {});
+                                setState(
+                                  () {},
+                                );
                               },
                             ),
                           ]),
@@ -127,7 +130,12 @@ class _ReelsPageState extends State<ReelsPage> {
               ),
             )
           : const Center(
-              child: Text("Not Supported on desktop"),
+              child: Text(
+                "Not Supported on desktop",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
             ),
     );
   }
