@@ -28,6 +28,18 @@ class UserProvider extends ChangeNotifier {
     return await UserPersistence().logout();
   }
 
+  Future<List<User>> fetchFeaturedUsers() async {
+    final result = await _userService.fetchFeaturedUser();
+
+    return result.fold(
+      (l) {
+        Fluttertoast.showToast(msg: l.toString());
+        return List.empty();
+      },
+      (r) => r,
+    );
+  }
+
   Future<bool> login(String email, String password) async {
     final result = await _userService.login(email, password);
     return result.fold((l) {

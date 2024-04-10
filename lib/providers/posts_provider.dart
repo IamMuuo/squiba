@@ -32,6 +32,20 @@ class PostProvider extends ChangeNotifier {
     );
   }
 
+  Future<List<Post>> fetchFeaturedPosts() async {
+    final response = await _postService.fetchFeaturedPosts();
+    return response.fold(
+      (l) {
+        print(l.toString());
+        Fluttertoast.showToast(msg: l.toString());
+        return List.empty();
+      },
+      (r) {
+        return r;
+      },
+    );
+  }
+
   Future<List<Comment>> fetchPostComments(int postID) async {
     final response = await _postService.fetchPostComments(postID);
 

@@ -1,4 +1,5 @@
 import 'package:squiba/barrel/barrel.dart';
+import 'package:squiba/screens/discover_page.dart';
 import 'package:squiba/screens/gallery_page.dart';
 import 'package:squiba/screens/reels_page.dart';
 
@@ -14,9 +15,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
 
   final List<Widget> pages = const [
     HomeScreen(),
-    Center(
-      child: Text("Discover"),
-    ),
+    DiscoverPage(),
     GalleryScreen(),
     ReelsPage(),
     ProfilePage(),

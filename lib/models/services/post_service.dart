@@ -24,6 +24,22 @@ class PostServixe with ApiService {
     }
   }
 
+  Future<Either<Exception, List<Post>>> fetchFeaturedPosts() async {
+    try {
+      final response =
+          await get(Uri.parse("${ApiService.urlPrefix}/posts/featured"));
+
+      if (response.statusCode != 200) {
+        return left(Exception(response.body));
+      }
+      List<Map<String, dynamic>> posts =
+          jsonDecode(response.body).cast<Map<String, dynamic>>();
+      return right(posts.map((e) => Post.fromJson(e)).toList());
+    } catch (e) {
+      return Left(Exception(e.toString()));
+    }
+  }
+
   Future<Either<Exception, List<Post>>> fetchCurrentUserPosts(
       int userID) async {
     try {

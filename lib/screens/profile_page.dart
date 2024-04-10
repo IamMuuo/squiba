@@ -58,7 +58,12 @@ class ProfilePage extends StatelessWidget {
                 ],
               ),
               FilledButton(
-                  onPressed: () {}, child: const Text("Share Profile")),
+                  onPressed: () {
+                    Fluttertoast.showToast(
+                      msg: "Link copied to clipboard",
+                    );
+                  },
+                  child: const Text("Share Profile")),
               const SizedBox(
                 height: 20,
               ),

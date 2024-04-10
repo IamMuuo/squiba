@@ -25,6 +25,21 @@ class UserService with ApiService {
     }
   }
 
+  Future<Either<Exception, List<User>>> fetchFeaturedUser() async {
+    try {
+      final response =
+          await get(Uri.parse("${ApiService.urlPrefix}/users/featured"));
+      if (response.statusCode == 200) {
+        final List<Map<String, dynamic>> data =
+            json.decode(response.body).cast<Map<String, dynamic>>();
+        return right(data.map((e) => User.fromJson(e)).toList());
+      }
+      return left(Exception("Failed to fetch featured users"));
+    } catch (e) {
+      return left(Exception(e));
+    }
+  }
+
   // login
   Future<Either<Exception, User>> login(
       String username, String password) async {

@@ -35,9 +35,7 @@ class HomeScreen extends StatelessWidget {
               ),
               actions: [
                 IconButton(
-                  onPressed: () {
-                    print(userProvider.user.id);
-                  },
+                  onPressed: () {},
                   icon: const Icon(Ionicons.heart_outline),
                 ),
                 IconButton(
