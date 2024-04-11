@@ -30,21 +30,18 @@ class _PostPageState extends State<PostPage> {
                   Theme.of(context).colorScheme.primary.withOpacity(0),
               floating: true,
               actions: [
+                widget.post.likedBy!.contains(_userProvider.user.id!)
+                    ? const Icon(Ionicons.heart, color: Colors.red)
+                    : const Icon(Ionicons.heart_outline),
                 IconButton(
-                  onPressed: () async {
-                    await _postsProvider.likePost(
-                      widget.post.id!,
-                      _userProvider.user.id!,
-                    );
+                  onPressed: () {
+                    _postsProvider.deletePost(widget.post.id!).then((value) {
+                      Navigator.of(context).pop();
+                    });
                   },
                   icon: const Icon(
-                    Ionicons.heart,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
                     Ionicons.trash_bin,
+                    color: Colors.red,
                   ),
                 ),
               ],
@@ -63,8 +60,10 @@ class _PostPageState extends State<PostPage> {
                           );
                           return;
                         }
-                        await _postsProvider.postComment(_commentController.text,
-                            widget.post.id!, _userProvider.user.id!);
+                        await _postsProvider.postComment(
+                            _commentController.text,
+                            widget.post.id!,
+                            _userProvider.user.id!);
                       },
                       icon: const Icon(Ionicons.send),
                     ),

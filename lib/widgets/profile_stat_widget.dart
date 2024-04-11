@@ -17,7 +17,7 @@ class ProfileStat extends StatelessWidget {
         children: [
           Text(
             stat,
-            style: Theme.of(context).textTheme.titleSmall,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           Text(label),
         ],

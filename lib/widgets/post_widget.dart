@@ -40,40 +40,43 @@ class PostWidget extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 35,
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: CachedNetworkImage(
-                          imageUrl:
-                              "https://i.pinimg.com/736x/00/fe/19/00fe191b0c4dde7d29d81c67bee0f0cb.jpg",
+                child: FutureBuilder(
+                  future: userProvider.fetchUser(post.user),
+                  builder: (context, snapshot) => Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 30,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: CachedNetworkImage(
+                            imageUrl: snapshot.data?.profilePhoto ??
+                                "https://i.pinimg.com/736x/00/fe/19/00fe191b0c4dde7d29d81c67bee0f0cb.jpg",
+                          ),
                         ),
                       ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Anon",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          "IamMuuo",
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Ionicons.share_social_outline),
-                    ),
-                  ],
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            snapshot.data?.firstName ?? "Anon",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            snapshot.data?.email ?? "Anon",
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      // IconButton(
+                      //   onPressed: () {},
+                      //   icon: const Icon(Ionicons.share_social_outline),
+                      // ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 3),
@@ -106,7 +109,7 @@ class PostWidget extends StatelessWidget {
                         userProvider.user.id!,
                       );
                     },
-                    icon: userProvider.user.id! == post.id!
+                    icon: post.likedBy!.contains(userProvider.user.id!)
                         ? const Icon(Ionicons.heart, color: Colors.red)
                         : const Icon(Ionicons.heart_outline),
                   ),

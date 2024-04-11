@@ -141,4 +141,20 @@ class PostServixe with ApiService {
       return left(Exception(e.toString()));
     }
   }
+
+  Future<Either<Exception, bool>> deletePost(int id) async {
+    try {
+      final response = await delete(
+        Uri.parse("${ApiService.urlPrefix}/posts/delete/$id"),
+        headers: headers,
+      );
+
+      if (response.statusCode != 200) {
+        return left(Exception("Failed to delete post"));
+      }
+      return right(true);
+    } catch (e) {
+      return left(Exception(e.toString()));
+    }
+  }
 }

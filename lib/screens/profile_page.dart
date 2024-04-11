@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:squiba/barrel/barrel.dart';
 import 'package:squiba/providers/posts_provider.dart';
+import 'package:squiba/screens/edit_profile_screen.dart';
 import 'package:squiba/widgets/profile_post_widget.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -52,11 +54,11 @@ class ProfilePage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   CircleAvatar(
-                    radius: 30,
+                    radius: 50,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(50),
                       child: CachedNetworkImage(
@@ -66,29 +68,36 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const ProfileStat(
-                    stat: "15k",
-                    label: "followers",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const ProfileStat(
+                        stat: "0",
+                        label: "Followers",
+                      ),
+                      const ProfileStat(
+                        stat: "0",
+                        label: "Following",
+                      ),
+                      ProfileStat(
+                        stat: postsProvider.currentUserPostCount.toString(),
+                        label: "Posts",
+                      ),
+                    ],
                   ),
-                  const ProfileStat(
-                    stat: "0",
-                    label: "following",
-                  ),
-                  ProfileStat(
-                    stat: postsProvider.currentUserPostCount.toString(),
-                    label: "Posts",
+                  OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => EditProfilePage(),
+                          ),
+                        );
+                      },
+                      child: const Text("Edit Profile")),
+                  const SizedBox(
+                    height: 20,
                   ),
                 ],
-              ),
-              FilledButton(
-                  onPressed: () {
-                    Fluttertoast.showToast(
-                      msg: "Link copied to clipboard",
-                    );
-                  },
-                  child: const Text("Share Profile")),
-              const SizedBox(
-                height: 20,
               ),
               Text(
                 "My posts",
