@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:dartz/dartz_unsafe.dart';
 import 'package:squiba/barrel/barrel.dart';
 import 'package:dartz/dartz.dart';
 
@@ -86,6 +89,64 @@ class UserService with ApiService {
           "Host resolution error please check your internet connection and try again",
         ),
       );
+    }
+  }
+
+  Future<Either<Exception, bool>> deleteAccount(int id) async {
+    try {
+      final response = await delete(
+        Uri.parse("${ApiService.urlPrefix}/users/delete/$id"),
+        headers: headers,
+      );
+      if (response.statusCode != 204) {
+        return Left(Exception(jsonDecode(response.body)["detail"]));
+      }
+
+      return const Right(true);
+    } catch (e) {
+      return Left(
+        Exception(
+          "Host resolution error please check your internet connection and try again",
+        ),
+      );
+    }
+  }
+
+  Future<Either<Exception, User>> updateUser(
+      Uint8List? profilePic, User user) async {
+    try {
+      debugPrint("Here");
+      var request = MultipartRequest('PATCH',
+          Uri.parse('${ApiService.urlPrefix}/users/info/${user.id!}/'));
+      if (profilePic != null) {
+        request.files.add(
+          await MultipartFile.fromBytes(
+            "profile_photo",
+            profilePic,
+            filename: "image.jpg",
+          ),
+        );
+      }
+
+      request.fields["first_name"] = user.firstName;
+      request.fields["last_name"] = user.lastName;
+      request.fields["email"] = user.email;
+
+      final response = await request.send();
+
+      debugPrint("There");
+
+      if (response.statusCode == 200) {
+        return right(
+            User.fromJson(json.decode(await response.stream.bytesToString())));
+      } else {
+        // debugPrint(response.statusCode.toString());
+        // debugPrint(await response.stream.bytesToString());
+        return left(Exception("Failed to update user details"));
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      return left(Exception(e.toString()));
     }
   }
 }

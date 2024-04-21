@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:squiba/barrel/barrel.dart';
 
 class UserProvider extends ChangeNotifier {
@@ -22,6 +24,38 @@ class UserProvider extends ChangeNotifier {
       debugPrint("loadUser done!");
       // notifyListeners();
     }
+  }
+
+  Future<bool> deleteAccount(int id) async {
+    final result = await _userService.deleteAccount(id);
+
+    return result.fold(
+      (l) {
+        Fluttertoast.showToast(msg: l.toString());
+        return false;
+      },
+      (r) => r,
+    );
+  }
+
+  Future<bool> updateUser(Uint8List? profile, User u) async {
+    final result = await _userService.updateUser(profile, u);
+
+    return result.fold(
+      (l) {
+        Fluttertoast.showToast(msg: l.toString());
+        return false;
+      },
+      (r) {
+        _currentUser = r;
+        debugPrint(_currentUser.profilePhoto);
+        UserPersistence().storeUser(r);
+        notifyListeners();
+
+        Fluttertoast.showToast(msg: "Successfully updated");
+        return true;
+      },
+    );
   }
 
   Future<bool> logout() async {

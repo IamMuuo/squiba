@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:squiba/barrel/barrel.dart';
 import 'package:squiba/providers/posts_provider.dart';
 import 'package:squiba/screens/edit_profile_screen.dart';
@@ -118,7 +117,7 @@ class ProfilePage extends StatelessWidget {
                       ],
                     );
                   }
-                  if (snapshot.hasData) {
+                  if (snapshot.data?.isNotEmpty ?? false) {
                     return GridView.builder(
                       itemCount: snapshot.data?.length,
                       shrinkWrap: true,
