@@ -1,16 +1,36 @@
-# squiba
+# Squiba 🐾
 
-A new Flutter project.
+Squiba is an Instagram-like social media platform for pets, built with Flutter. It's a work in progress, but already includes some exciting features! 🚀
 
-## Getting Started
+## Features 🌟
 
-This project is a starting point for a Flutter application.
+- **Users**: Manage your pet's profile and follow other pets.
+- **Posts**: Share your pet's adventures with the world.
+- **Likes**: Show your pet's love for their favorite posts.
+- **Reels**: Create and share short videos of your pet's daily life.
 
-A few resources to get you started if this is your first Flutter project:
+## Tech Stack 🛠️
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Flutter**: For building the app's UI and logic.
+- **Provider**: For state management, making it easier to manage and share state across the app.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Development Status 🚧
+
+Squiba is still under development. More features and improvements are on the way!
+
+## License 📄
+
+This project is distributed under the GNU License.
+
+## Contributing 🤝
+
+Contributions, issues, and feature requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+## Contact 📫
+
+If you have any questions or suggestions, feel free to reach out to me on GitHub.
+
+## Acknowledgments 🙏
+
+- Thanks to the Flutter and Provider communities for their support and resources.
+- Inspiration from Instagram and the pet community.
