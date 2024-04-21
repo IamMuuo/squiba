@@ -21,6 +21,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
   XFile? _postImage;
   Uint8List? _imageBytes;
   bool _done = false;
+  bool isLoading = false;
 
   final controller = CropController(
     aspectRatio: 4.0 / 3.0,
@@ -62,15 +63,18 @@ class _GalleryScreenState extends State<GalleryScreen> {
                     icon: const Icon(Ionicons.trash)),
                 IconButton(
                     onPressed: () async {
-                      setState(() {
-                        _done = true;
-                      });
-
-                      if (_done) {
+                      if (_imageBytes != null && _done) {
+                        setState(() {
+                          isLoading = true;
+                        });
                         await _postProvider.addPost(_imageBytes!,
                             _postTextController.text, _userProvider.user.id!);
-                        _imageBytes = null;
-                        _postImage = null;
+
+                        setState(() {
+                          _imageBytes = null;
+                          _postImage = null;
+                          isLoading = true;
+                        });
                       }
                     },
                     icon: const Icon(Ionicons.checkmark_outline)),
@@ -119,50 +123,69 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 ],
               ),
             )
-          : Center(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 12, right: 12),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      !_done
-                          ? CropImage(
-                              controller: controller,
-                              image: Image.memory(
-                                _imageBytes!,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.6,
-                                width: MediaQuery.of(context).size.width,
-                                fit: BoxFit.scaleDown,
-                              ),
-                            )
-                          : FutureBuilder(
-                              future: controller.croppedImage(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState !=
-                                    ConnectionState.done) {
-                                  return const Text("Cropping");
-                                }
-                                return snapshot.data!;
-                              },
-                            ),
-                      const SizedBox(
-                        height: 12,
+          : !isLoading
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12, right: 12),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          !_done
+                              ? CropImage(
+                                  controller: controller,
+                                  image: Image.memory(
+                                    _imageBytes!,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.6,
+                                    width: MediaQuery.of(context).size.width,
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                )
+                              : FutureBuilder(
+                                  future: controller.croppedImage(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState !=
+                                        ConnectionState.done) {
+                                      return const Text("Cropping");
+                                    }
+                                    return snapshot.data!;
+                                  },
+                                ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          TextField(
+                            onChanged: (value) {
+                              if (value.isNotEmpty) {
+                                _done = true;
+                              } else {
+                                _done = false;
+                              }
+                            },
+                            controller: _postTextController,
+                            maxLines: 3,
+                            decoration: const InputDecoration(
+                                hintText: "Write something to your post",
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(width: 1))),
+                          )
+                        ],
                       ),
-                      TextField(
-                        controller: _postTextController,
-                        maxLines: 3,
-                        decoration: const InputDecoration(
-                            hintText: "Write something to your post",
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(width: 1))),
-                      )
-                    ],
+                    ),
                   ),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Lottie.asset(
+                      "assets/lottie/loading.json",
+                      height: 80,
+                    ),
+                    const Text("Uploading your post")
+                  ],
                 ),
-              ),
-            ),
     );
   }
 }

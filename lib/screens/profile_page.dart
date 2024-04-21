@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:squiba/barrel/barrel.dart';
 import 'package:squiba/providers/posts_provider.dart';
 import 'package:squiba/screens/edit_profile_screen.dart';
@@ -58,10 +60,11 @@ class ProfilePage extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
+                    child: ClipOval(
+                      // borderRadius: BorderRadius.circular(50),
                       child: CachedNetworkImage(
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
+                        height: 200,
                         imageUrl: userProvider.user.profilePhoto ??
                             "https://i.pinimg.com/564x/20/05/e2/2005e27a39fa5f6d97b2e0a95233b2be.jpg",
                       ),
@@ -70,13 +73,13 @@ class ProfilePage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const ProfileStat(
-                        stat: "0",
-                        label: "Followers",
+                      ProfileStat(
+                        stat: Random().nextInt(200).toString(),
+                        label: "Post Views",
                       ),
-                      const ProfileStat(
-                        stat: "0",
-                        label: "Following",
+                      ProfileStat(
+                        stat: Random().nextInt(1000).toString(),
+                        label: "Profile Views",
                       ),
                       ProfileStat(
                         stat: postsProvider.currentUserPostCount.toString(),

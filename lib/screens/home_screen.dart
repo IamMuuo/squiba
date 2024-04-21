@@ -35,11 +35,15 @@ class HomeScreen extends StatelessWidget {
               ),
               actions: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    featureComingSoon();
+                  },
                   icon: const Icon(Ionicons.heart_outline),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    featureComingSoon();
+                  },
                   icon: const Icon(Ionicons.chatbubbles_outline),
                 )
               ],
@@ -56,20 +60,27 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            if (Platform.isAndroid) {
-                              final image = await ImagePicker()
-                                  .pickImage(source: ImageSource.gallery);
+                            if (Platform.isAndroid || Platform.isIOS) {
+                              final image = await ImagePicker().pickImage(
+                                source: ImageSource.gallery,
+                              );
+
+                              await storyProvider.postStory(
+                                userProvider.user.id!,
+                                await image?.readAsBytes(),
+                                text: null,
+                              );
                             }
                           },
                           child: CircleAvatar(
                             radius: 40,
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(50)),
+                            child: ClipOval(
                               child: Stack(
                                 children: [
                                   CachedNetworkImage(
-                                    fit: BoxFit.fill,
+                                    height: 200,
+                                    width: 200,
+                                    fit: BoxFit.cover,
                                     imageUrl: userProvider.user.profilePhoto ??
                                         "https://i.pinimg.com/564x/20/05/e2/2005e27a39fa5f6d97b2e0a95233b2be.jpg",
                                   ),

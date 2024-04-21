@@ -133,8 +133,10 @@ class PostServixe with ApiService {
         return right(true);
       } else {
         // debugPrint(response.statusCode.toString());
-        // debugPrint(await response.stream.bytesToString());
-        return left(Exception("Failed to upload post"));
+        // throw(await response.stream.bytesToString());
+
+        return left(Exception(
+            "Failed to upload post ${await response.stream.bytesToString()}"));
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -149,7 +151,7 @@ class PostServixe with ApiService {
         headers: headers,
       );
 
-      if (response.statusCode != 200) {
+      if (response.statusCode != 204) {
         return left(Exception("Failed to delete post"));
       }
       return right(true);

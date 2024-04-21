@@ -98,7 +98,7 @@ class _ReelsPageState extends State<ReelsPage> {
                                 color: Colors.white,
                               ),
                               onPressed: () {
-                                setState(() {});
+                                featureComingSoon();
                               },
                             ),
                             IconButton(
@@ -107,7 +107,7 @@ class _ReelsPageState extends State<ReelsPage> {
                                 color: Colors.white,
                               ),
                               onPressed: () {
-                                setState(() {});
+                                featureComingSoon();
                               },
                             ),
                             IconButton(
@@ -116,9 +116,7 @@ class _ReelsPageState extends State<ReelsPage> {
                                 color: Colors.white,
                               ),
                               onPressed: () {
-                                setState(
-                                  () {},
-                                );
+                                featureComingSoon();
                               },
                             ),
                           ]),

@@ -27,10 +27,10 @@ class ProfilePostCard extends StatelessWidget {
         },
         child: Stack(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+            ClipRect(
+              // borderRadius: BorderRadius.circular(8),
               child: CachedNetworkImage(
-                height: 150,
+                width: 120,
                 fit: BoxFit.cover,
                 imageUrl: "${post.content}",
               ),
@@ -39,7 +39,7 @@ class ProfilePostCard extends StatelessWidget {
               bottom: 0,
               left: 2,
               child: Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(8)),

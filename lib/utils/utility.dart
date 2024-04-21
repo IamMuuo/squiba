@@ -17,3 +17,10 @@ Future<bool> isLoggedIn() async {
   }
   return false;
 }
+
+void featureComingSoon() {
+  Fluttertoast.showToast(
+    msg: "Feature Coming Soon",
+    backgroundColor: Colors.teal,
+  );
+}

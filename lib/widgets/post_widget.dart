@@ -46,9 +46,11 @@ class PostWidget extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 30,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
+                        child: ClipOval(
                           child: CachedNetworkImage(
+                            width: 30,
+                            height: 30,
+                            fit: BoxFit.cover,
                             imageUrl: snapshot.data?.profilePhoto ??
                                 "https://i.pinimg.com/736x/00/fe/19/00fe191b0c4dde7d29d81c67bee0f0cb.jpg",
                           ),

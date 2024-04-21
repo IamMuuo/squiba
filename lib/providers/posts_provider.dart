@@ -107,7 +107,8 @@ class PostProvider extends ChangeNotifier {
     final res = await _postService.deletePost(id);
 
     res.fold((l) => Fluttertoast.showToast(msg: l.toString()), (r) {
-      Fluttertoast.showToast(msg: "Deleted message successfully");
+      Fluttertoast.showToast(msg: "Deleted post successfully");
+      notifyListeners();
     });
   }
 }

@@ -1,5 +1,6 @@
 import 'package:squiba/barrel/barrel.dart';
 import 'package:squiba/providers/posts_provider.dart';
+import 'package:squiba/screens/profile_view_page.dart';
 import 'package:squiba/widgets/post_widget.dart';
 import 'package:squiba/widgets/skeletons/story_widget_skeleton.dart';
 
@@ -22,6 +23,9 @@ class DiscoverPage extends StatelessWidget {
             ),
           ],
           title: TextField(
+            onTap: () {
+              featureComingSoon();
+            },
             controller: searchController,
             decoration: const InputDecoration(
               hintText: "Search for someone",
@@ -58,13 +62,25 @@ class DiscoverPage extends StatelessWidget {
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) => Column(
                     children: [
-                      CircleAvatar(
-                        radius: 40,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: CachedNetworkImage(
-                              imageUrl: snapshot.data![index].profilePhoto ??
-                                  "https://i.pinimg.com/564x/20/05/e2/2005e27a39fa5f6d97b2e0a95233b2be.jpg"),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ProfilePageView(
+                                userID: snapshot.data![index].id!,
+                              ),
+                            ),
+                          );
+                        },
+                        child: CircleAvatar(
+                          radius: 40,
+                          child: ClipOval(
+                            child: CachedNetworkImage(
+                                height: 200,
+                                fit: BoxFit.cover,
+                                imageUrl: snapshot.data![index].profilePhoto ??
+                                    "https://i.pinimg.com/564x/20/05/e2/2005e27a39fa5f6d97b2e0a95233b2be.jpg"),
+                          ),
                         ),
                       ),
                       Text(snapshot.data![index].username)

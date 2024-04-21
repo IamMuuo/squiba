@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:squiba/barrel/barrel.dart';
 
 class StoryProvider extends ChangeNotifier {
@@ -12,11 +14,27 @@ class StoryProvider extends ChangeNotifier {
         );
       },
       (r) {
-        stories.clear();// temporary fix
+        stories.clear(); // temporary fix
         for (var story in r) {
           stories.putIfAbsent(story.user, () => <Story>[]).add(story);
         }
       },
     );
+  }
+
+  Future<void> postStory(int id, Uint8List? s, {String? text}) async {
+    debugPrint("Wacha");
+    final status = await storyService.postStory(id, s, text: text);
+
+    status.fold((l) {
+      Fluttertoast.showToast(
+        msg: l.toString(),
+      );
+    }, (r) {
+      Fluttertoast.showToast(
+        msg: "Successfully posted a story",
+      );
+    });
+    notifyListeners();
   }
 }

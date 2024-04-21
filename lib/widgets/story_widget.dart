@@ -33,9 +33,11 @@ class StoryWidget extends StatelessWidget {
               ),
               child: CircleAvatar(
                 radius: 35,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
+                child: ClipOval(
+                  // borderRadius: BorderRadius.circular(50),
                   child: CachedNetworkImage(
+                    height: 200,
+                    fit: BoxFit.cover,
                     imageUrl: imageUrl,
                   ),
                 ),
