@@ -106,7 +106,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(120),
                       // radius: 30,
-                      child: hasProfile
+                      child: !hasProfile
                           ? CachedNetworkImage(
                               height: 300,
                               width: 300,

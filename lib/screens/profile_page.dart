@@ -10,6 +10,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final userProvider = Provider.of<UserProvider>(context);
     final postsProvider = Provider.of<PostProvider>(context);
     return Scaffold(
